@@ -42,7 +42,7 @@ var run = function() {
 var clear = function() {
   var logger = document.getElementById('log');
   logger.innerHTML = '';
-}
+};
 
 var analyze = function(request) {
   if (! request.request.url.match(/ads\?/)) {
@@ -50,14 +50,24 @@ var analyze = function(request) {
   }
 
   var iu = readQueryParameter(request.request.queryString, 'iu');
+  if (iu) {
+    return analyzeSingleAdRequest(request);
+  }
+
+  var iu = readQueryParameter(request.request.queryString, 'iu_parts');
+  if (iu) {
+    return analyzeMultipleAdRequest(request);
+  }
+
+  log(request);
+};
+
+var analyzeSingleAdRequest = function(request) {
+  var iu = readQueryParameter(request.request.queryString, 'iu');
   var sz = readQueryParameter(request.request.queryString, 'sz');
   var scp = readQueryParameter(request.request.queryString, 'scp');
   var cust_params = readQueryParameter(request.request.queryString, 'cust_params');
   var npa = readQueryParameter(request.request.queryString, 'npa');
-
-  if (! iu) {
-    return;
-  }
 
   var adUnit = iu.split('/').slice(0, -1).join('/');
   var slot = iu.split('/').slice(-1)[0];
@@ -72,6 +82,33 @@ var analyze = function(request) {
   if (cust_params) log('&bullet; cust_params: ' + cust_params);
   if (scp) log('&bullet; scp: ' + scp);
   if (sz) log('&bullet; sz: ' + sz);
+}
+
+var analyzeMultipleAdRequest = function(request) {
+  var iu = readQueryParameter(request.request.queryString, 'iu_parts');
+  var sz = readQueryParameter(request.request.queryString, 'prev_iu_szs');
+  var scp = readQueryParameter(request.request.queryString, 'prev_scp');
+  var cust_params = readQueryParameter(request.request.queryString, 'cust_params');
+  var npa = readQueryParameter(request.request.queryString, 'npa');
+
+  var sz = sz.split(',');
+  var adUnit = iu.split(',').slice(0, -1 * sz.length).join('/');
+  var slots = iu.split(',').slice(-1 * sz.length);
+  var scp = scp ? scp.split('|') : false;
+
+  if (adUnit !== window.lastAdUnit) {
+    window.lastAdUnit = adUnit;
+    log(adUnit, 'h2');
+    log(lastPageUrl);
+  }
+
+  log('Single DFP request with slots ' + slots.join(',') + (npa == '1' ? ' NPA' : ''), 'h3');
+  slots.forEach(function(slot, index) {
+    log(slot, 'h3');
+    if (cust_params) log('&bullet; cust_params: ' + cust_params);
+    if (scp && scp[index]) log('&bullet; scp: ' + scp[index]);
+    if (sz) log('&bullet; sz: ' + sz[index]);
+  });
 }
 
 var readQueryParameter = function(query, name) {
