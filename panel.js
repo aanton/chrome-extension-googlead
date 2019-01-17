@@ -68,6 +68,8 @@ var analyzeSingleAdRequest = function(request) {
   var scp = readQueryParameter(request.request.queryString, 'scp');
   var cust_params = readQueryParameter(request.request.queryString, 'cust_params');
   var npa = readQueryParameter(request.request.queryString, 'npa');
+  var creativeId = readHeader(request.response.headers, 'google-creative-id');
+  var lineitemId = readHeader(request.response.headers, 'google-lineitem-id');
 
   var adUnit = iu.split('/').slice(0, -1).join('/');
   var slot = iu.split('/').slice(-1)[0];
@@ -82,6 +84,7 @@ var analyzeSingleAdRequest = function(request) {
   if (cust_params) log('&bullet; cust_params: ' + cust_params);
   if (scp) log('&bullet; scp: ' + scp);
   if (sz) log('&bullet; sz: ' + sz);
+  if (creativeId || lineitemId) log('&bullet; creative: ' + creativeId + ' &bull; lineitem: ' + lineitemId);
 }
 
 var analyzeMultipleAdRequest = function(request) {
@@ -90,11 +93,15 @@ var analyzeMultipleAdRequest = function(request) {
   var scp = readQueryParameter(request.request.queryString, 'prev_scp');
   var cust_params = readQueryParameter(request.request.queryString, 'cust_params');
   var npa = readQueryParameter(request.request.queryString, 'npa');
+  var creativeId = readHeader(request.response.headers, 'google-creative-id');
+  var lineitemId = readHeader(request.response.headers, 'google-lineitem-id');
 
-  var sz = sz.split(',');
+  sz = sz.split(',');
   var adUnit = iu.split(',').slice(0, -1 * sz.length).join('/');
   var slots = iu.split(',').slice(-1 * sz.length);
-  var scp = scp ? scp.split('|') : false;
+  scp = scp ? scp.split('|') : false;
+  creativeId = creativeId ? creativeId.split(',') : [];
+  lineitemId = lineitemId ? lineitemId.split(',') : [];
 
   if (adUnit !== window.lastAdUnit) {
     window.lastAdUnit = adUnit;
@@ -108,6 +115,7 @@ var analyzeMultipleAdRequest = function(request) {
     if (cust_params) log('&bullet; cust_params: ' + cust_params);
     if (scp && scp[index]) log('&bullet; scp: ' + scp[index]);
     if (sz) log('&bullet; sz: ' + sz[index]);
+    if (creativeId || lineitemId) log('&bullet; creative: ' + creativeId[index] + ' &bull; lineitem: ' + lineitemId[index]);
   });
 }
 
@@ -117,6 +125,14 @@ var readQueryParameter = function(query, name) {
   });
   
   return found ? unescape(found.value) : false;
+};
+
+var readHeader = function(header, name) {
+  var found = header.find(function(parameter) {
+    return parameter.name === name;
+  });
+
+  return found ? found.value : false;
 };
 
 run();
