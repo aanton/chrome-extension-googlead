@@ -59,7 +59,7 @@ var analyze = function(request) {
     return analyzeMultipleAdRequest(request);
   }
 
-  log(request);
+  // log(request);
 };
 
 var analyzeSingleAdRequest = function(request) {
