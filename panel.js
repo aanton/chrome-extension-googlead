@@ -2,7 +2,7 @@ var autoclear = true;
 
 var log = function(message, wrap = 'div') {
   var logger = document.getElementById('log');
-  logger.innerHTML += 
+  logger.innerHTML +=
     '<' + wrap + '>' +
     (typeof message == 'object' ? JSON.stringify(message) : message) +
     '</' + wrap + '>\n';
@@ -46,6 +46,10 @@ var clear = function() {
 
 var analyze = function(request) {
   if (! request.request.url.match(/ads\?/)) {
+    return;
+  }
+
+  if (request.response.status === 400 && request.response.statusText === 'Service Worker Fallback Required') {
     return;
   }
 
@@ -123,7 +127,7 @@ var readQueryParameter = function(query, name) {
   var found = query.find(function(parameter) {
     return parameter.name === name;
   });
-  
+
   return found ? unescape(found.value) : false;
 };
 
