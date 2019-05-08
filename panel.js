@@ -85,8 +85,8 @@ var analyzeSingleAdRequest = function(request) {
   }
 
   log(slot + (npa == '1' ? ' NPA' : ''), 'h3');
-  if (cust_params) log('&bullet; cust_params: ' + cust_params);
-  if (scp) log('&bullet; scp: ' + scp);
+  if (cust_params) log('&bullet; cust_params: ' + formatParameters(cust_params));
+  if (scp) log('&bullet; scp: ' + formatParameters(scp));
   if (sz) log('&bullet; sz: ' + sz);
   if (creativeId || lineitemId) log('&bullet; creative: ' + creativeId + ' &bull; lineitem: ' + lineitemId);
 }
@@ -116,8 +116,8 @@ var analyzeMultipleAdRequest = function(request) {
   log('Single DFP request with slots ' + slots.join(',') + (npa == '1' ? ' NPA' : ''), 'h3');
   slots.forEach(function(slot, index) {
     log(slot, 'h3');
-    if (cust_params) log('&bullet; cust_params: ' + cust_params);
-    if (scp && scp[index]) log('&bullet; scp: ' + scp[index]);
+    if (cust_params) log('&bullet; cust_params: ' + formatParameters(cust_params));
+    if (scp && scp[index]) log('&bullet; scp: ' + formatParameters(scp[index]));
     if (sz) log('&bullet; sz: ' + sz[index]);
     if (creativeId || lineitemId) log('&bullet; creative: ' + creativeId[index] + ' &bull; lineitem: ' + lineitemId[index]);
   });
@@ -137,6 +137,12 @@ var readHeader = function(header, name) {
   });
 
   return found ? found.value : false;
+};
+
+var formatParameters = function(str) {
+  var params = str.split('&');
+  params.sort();
+  return params.join(' &#x2010; ');
 };
 
 run();
