@@ -1,25 +1,20 @@
-import { readQueryParameter, readHeader, formatParameters } from './utils.js';
+import { formatParameters } from './utils.js';
+import { isNormalAdRequest, analyzeNormalAdRequest } from './analyzeNormalAdRequest.js';
+import { isSingleAdsRequest, analyzeSingleAdsRequest } from './analyzeSingleAdsRequest.js';
 
 const autoclear = true;
 
-let lastPageUrl = false;
-let lastAdUnit = false;
-
-const loggerEl = document.getElementById('logger');
+const contentEl = document.getElementById('content');
 const clearEl = document.getElementById('clear');
 
-const log = function(message, wrap = 'div') {
-  const html = `
-<${wrap}>
-  ${typeof message == 'object' ? JSON.stringify(message) : message}
-</${wrap}>
-`;
-  loggerEl.insertAdjacentHTML('beforeend', html);
-  loggerEl.scrollTo(0, loggerEl.scrollHeight);
+const displayHtml = function(message) {
+  const html = typeof message == 'object' ? `<pre>${JSON.stringify(message, null, 2)}</pre>` : message;
+  contentEl.insertAdjacentHTML('beforeend', html);
+  contentEl.scrollTo(0, contentEl.scrollHeight);
 };
 
-const clear = function() {
-  loggerEl.innerHTML = '';
+const clearHtml = function() {
+  contentEl.innerHTML = '';
 };
 
 const hideClearButton = function() {
@@ -27,12 +22,10 @@ const hideClearButton = function() {
 };
 
 const handleClearButton = function() {
-  clear();
+  clearHtml();
 };
 
 const init = function() {
-  log('Extension loaded !');
-
   if (autoclear) {
     hideClearButton();
   } else {
@@ -45,12 +38,11 @@ const init = function() {
 };
 
 const handleNavigation = function(url) {
-  lastPageUrl = url;
-  lastAdUnit = false;
-
   if (autoclear) {
-    clear();
+    clearHtml();
   }
+
+  displayHtml(`<div>Navigate to ${url}</div>`);
 };
 
 const handleRequest = function(request) {
@@ -62,81 +54,43 @@ const handleRequest = function(request) {
     return;
   }
 
-  let iu = readQueryParameter(request.request.queryString, 'iu');
-  if (iu) {
-    return analyzeSingleAdRequest(request);
+  if (isNormalAdRequest(request)) {
+    displayNormalAdRequest(analyzeNormalAdRequest(request));
+    return;
   }
 
-  iu = readQueryParameter(request.request.queryString, 'iu_parts');
-  if (iu) {
-    return analyzeMultipleAdRequest(request);
+  if (isSingleAdsRequest(request)) {
+    displaySingleAdsRequest(analyzeSingleAdsRequest(request));
+    return;
   }
 
   // log(request);
 };
 
-const analyzeSingleAdRequest = function(request) {
-  const iu = readQueryParameter(request.request.queryString, 'iu');
-  const sz = readQueryParameter(request.request.queryString, 'sz');
-  const scp = readQueryParameter(request.request.queryString, 'scp');
-  const cust_params = readQueryParameter(request.request.queryString, 'cust_params');
-  const npa = readQueryParameter(request.request.queryString, 'npa');
-  const creativeId = readHeader(request.response.headers, 'google-creative-id');
-  const lineitemId = readHeader(request.response.headers, 'google-lineitem-id');
+const displayNormalAdRequest = function(data) {
+  const html = `
+<div>
+  <h3>${data.adUnit} ${data.isAnonymous ? 'NPA' : ''}</h3>
+  <div>&bullet; sizes: ${data.sizes}</div>
+  ${data.globalTargetings ? `<div>&bullet; globalTargetings: ${formatParameters(data.globalTargetings)}</div>` : ''}
+  ${data.slotTargetings ? `<div>&bullet; slotTargetings: ${formatParameters(data.slotTargetings)}</div>` : ''}
+  <div>
+    &bullet; creativeId: ${data.creativeId}
+    &bullet; lineitemId: ${data.lineitemId}
+  </div>
+</div>
+  `;
 
-  const iuTokens = iu.split('/');
-  const adUnit = iuTokens.slice(0, -1).join('/');
-  const slot = iuTokens.slice(-1)[0];
-
-  if (adUnit !== lastAdUnit) {
-    lastAdUnit = adUnit;
-    log(adUnit, 'h2');
-    log(lastPageUrl);
-  }
-
-  log(slot + (npa == '1' ? ' NPA' : ''), 'h3');
-  if (cust_params) log('&bullet; cust_params: ' + formatParameters(cust_params));
-  if (scp) log('&bullet; scp: ' + formatParameters(scp));
-  if (sz) log('&bullet; sz: ' + sz);
-  if (creativeId || lineitemId) {
-    log('&bullet; creative: ' + creativeId + ' &bull; lineitem: ' + lineitemId);
-  }
+  displayHtml(html);
 };
 
-const analyzeMultipleAdRequest = function(request) {
-  const iu = readQueryParameter(request.request.queryString, 'iu_parts');
-  let sz = readQueryParameter(request.request.queryString, 'prev_iu_szs');
-  let scp = readQueryParameter(request.request.queryString, 'prev_scp');
-  const cust_params = readQueryParameter(request.request.queryString, 'cust_params');
-  const npa = readQueryParameter(request.request.queryString, 'npa');
-  let creativeId = readHeader(request.response.headers, 'google-creative-id');
-  let lineitemId = readHeader(request.response.headers, 'google-lineitem-id');
+const displaySingleAdsRequest = function(data) {
+  const adUnitPrefix = data[0].adUnitPrefix;
+  const slots = data.map(_data => _data.slot).join(',');
+  const isAnonymous = data[0].isAnonymous;
 
-  sz = sz.split(',');
-  scp = scp ? scp.split('|') : false;
-  creativeId = creativeId ? creativeId.split(',') : [];
-  lineitemId = lineitemId ? lineitemId.split(',') : [];
-
-  const iuTokens = iu.split(',');
-  const adUnit = iuTokens.slice(0, -1 * sz.length).join('/');
-  const slots = iuTokens.slice(-1 * sz.length);
-
-  if (adUnit !== lastAdUnit) {
-    lastAdUnit = adUnit;
-    log(adUnit, 'h2');
-    log(lastPageUrl);
-  }
-
-  log('Single DFP request with slots ' + slots.join(',') + (npa == '1' ? ' NPA' : ''), 'h3');
-  slots.forEach(function(slot, index) {
-    log(slot, 'h3');
-    if (cust_params) log('&bullet; cust_params: ' + formatParameters(cust_params));
-    if (scp && scp[index]) log('&bullet; scp: ' + formatParameters(scp[index]));
-    if (sz) log('&bullet; sz: ' + sz[index]);
-    if (creativeId || lineitemId) {
-      log('&bullet; creative: ' + creativeId[index] + ' &bull; lineitem: ' + lineitemId[index]);
-    }
-  });
+  displayHtml(`<h2>SingleRequest of ${adUnitPrefix} for ${slots} ${isAnonymous ? 'NPA' : ''}</h2>`);
+  data.forEach(_data => displayNormalAdRequest(_data));
 };
 
 init();

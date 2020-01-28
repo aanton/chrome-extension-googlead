@@ -3,17 +3,17 @@ h1 {
   margin: 1em 0;
 }
 h2 {
-  font-size: 1.125em;
+  font-size: 1em;
   margin: 0.5em 0;
-  background-color: #ccc;
+  background-color: #ddd;
 }
 h3 {
   font-size: 1em;
   margin: 0.25em 0;
   font-weight: bold;
-  background-color: #ddd;
+  background-color: #eee;
 }
-#logger {
+#content {
   width: 100%;
   height: 90%;
   overflow: auto;
