@@ -1,10 +1,10 @@
 import { readQueryParameter, readHeader } from './utils.js';
 
-export const isSingleAdsRequest = function(request) {
+export const isMultipleAdsRequest = function(request) {
   return !!readQueryParameter(request.request.queryString, 'iu_parts');
 };
 
-export const analyzeSingleAdsRequest = function(request) {
+export const analyzeMultipleAdsRequest = function(request) {
   let sizes = readQueryParameter(request.request.queryString, 'prev_iu_szs').split(',');
   const count = sizes.length;
 

@@ -1,21 +1,59 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
 h1 {
   font-size: 1.25em;
-  margin: 1em 0;
-}
-h2 {
-  font-size: 1em;
   margin: 0.5em 0;
-  background-color: #ddd;
 }
-h3 {
-  font-size: 1em;
-  margin: 0.25em 0;
-  font-weight: bold;
-  background-color: #eee;
-}
+
 #content {
   width: 100%;
   height: 90%;
   overflow: auto;
   word-break: break-all;
+}
+
+.block-ads {
+  background-color: hsl(200, 60%, 90%);
+}
+
+.block-ads h2 {
+  font-size: 1em;
+  margin: 0.5em 0;
+  padding: 0.5em;
+  background-color: hsl(200, 90%, 80%);
+}
+
+.block-ads h3 {
+  font-size: 1em;
+  margin: 0.25em 0;
+  padding: 0.5em;
+  font-weight: bold;
+  background-color: hsl(200, 75%, 85%);
+}
+
+.block-ads .slot {
+  margin-bottom: 0.5em;
+}
+
+.block-ads.anonymous {
+  background-color: hsl(0, 60%, 90%);
+}
+
+.block-ads.anonymous h2 {
+  background-color: hsl(0, 90%, 80%);
+}
+
+.block-ads.anonymous h3 {
+  background-color: hsl(0, 75%, 85%);
+}
+
+.block-ads.normal-ad.anonymous h3 {
+  background-color: hsl(0, 90%, 80%);
+}
+
+.block-ads.normal-ad h3 {
+  background-color: hsl(200, 90%, 80%);
 }

@@ -1,36 +1,10 @@
 import { formatParameters } from './utils.js';
+import { initDisplay, displayBlock, clearDisplayIfAutoclear } from './display.js';
 import { isNormalAdRequest, analyzeNormalAdRequest } from './analyzeNormalAdRequest.js';
-import { isSingleAdsRequest, analyzeSingleAdsRequest } from './analyzeSingleAdsRequest.js';
-
-const autoclear = true;
-
-const contentEl = document.getElementById('content');
-const clearEl = document.getElementById('clear');
-
-const displayHtml = function(message) {
-  const html = typeof message == 'object' ? `<pre>${JSON.stringify(message, null, 2)}</pre>` : message;
-  contentEl.insertAdjacentHTML('beforeend', html);
-  contentEl.scrollTo(0, contentEl.scrollHeight);
-};
-
-const clearHtml = function() {
-  contentEl.innerHTML = '';
-};
-
-const hideClearButton = function() {
-  clearEl.style = 'display:none';
-};
-
-const handleClearButton = function() {
-  clearHtml();
-};
+import { isMultipleAdsRequest, analyzeMultipleAdsRequest } from './analyzeMultipleAdsRequest.js';
 
 const init = function() {
-  if (autoclear) {
-    hideClearButton();
-  } else {
-    clearEl.addEventListener('click', handleClearButton);
-  }
+  initDisplay();
 
   // https://developer.chrome.com/extensions/devtools_network
   chrome.devtools.network.onRequestFinished.addListener(handleRequest);
@@ -38,11 +12,8 @@ const init = function() {
 };
 
 const handleNavigation = function(url) {
-  if (autoclear) {
-    clearHtml();
-  }
-
-  displayHtml(`<div>Navigate to ${url}</div>`);
+  clearDisplayIfAutoclear();
+  displayBlock(`<div class="navigation">Navigate to <span>${url}</span></div>`);
 };
 
 const handleRequest = function(request) {
@@ -59,18 +30,43 @@ const handleRequest = function(request) {
     return;
   }
 
-  if (isSingleAdsRequest(request)) {
-    displaySingleAdsRequest(analyzeSingleAdsRequest(request));
+  if (isMultipleAdsRequest(request)) {
+    displayMultipleAdsRequest(analyzeMultipleAdsRequest(request));
     return;
   }
 
-  // log(request);
+  // displayBlock(request);
 };
 
 const displayNormalAdRequest = function(data) {
+  const isAnonymous = data.isAnonymous;
+
   const html = `
-<div>
-  <h3>${data.adUnit} ${data.isAnonymous ? 'NPA' : ''}</h3>
+<div class="block-ads normal-ad ${isAnonymous ? 'anonymous' : ''}">
+  ${getSlotHtml(data)}
+</div>
+  `;
+  displayBlock(html);
+};
+
+const displayMultipleAdsRequest = function(data) {
+  const adUnitPrefix = data[0].adUnitPrefix;
+  const slots = data.map(_data => _data.slot).join(',');
+  const isAnonymous = data[0].isAnonymous;
+
+  const html = `
+<div class="block-ads multiple-ads ${isAnonymous ? 'anonymous' : ''}">
+  <h2>SRA ${adUnitPrefix} for ${slots}</h2>
+  ${data.map(_data => getSlotHtml(_data)).join('')}
+</div>
+  `;
+  displayBlock(html);
+};
+
+const getSlotHtml = function(data) {
+  return `
+<div class="slot">
+  <h3>${data.adUnit}</h3>
   <div>&bullet; sizes: ${data.sizes}</div>
   ${data.globalTargetings ? `<div>&bullet; globalTargetings: ${formatParameters(data.globalTargetings)}</div>` : ''}
   ${data.slotTargetings ? `<div>&bullet; slotTargetings: ${formatParameters(data.slotTargetings)}</div>` : ''}
@@ -80,17 +76,6 @@ const displayNormalAdRequest = function(data) {
   </div>
 </div>
   `;
-
-  displayHtml(html);
-};
-
-const displaySingleAdsRequest = function(data) {
-  const adUnitPrefix = data[0].adUnitPrefix;
-  const slots = data.map(_data => _data.slot).join(',');
-  const isAnonymous = data[0].isAnonymous;
-
-  displayHtml(`<h2>SingleRequest of ${adUnitPrefix} for ${slots} ${isAnonymous ? 'NPA' : ''}</h2>`);
-  data.forEach(_data => displayNormalAdRequest(_data));
 };
 
 init();
