@@ -8,7 +8,7 @@ const removeClearButton = function() {
 };
 
 const handleClearButton = function(e) {
-  e.preventDefaul();
+  e.preventDefault();
   clearAll();
 };
 
