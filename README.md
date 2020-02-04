@@ -22,3 +22,11 @@ If you are tired to check the "Network panel" to review the parameters sent to G
 
 * Support for single-request & multiple-request mode
 * Visual difference of anonymous & personalized ads requests
+
+## 🚧 Tests
+
+A manual test is provided to ease the development process. It requires [Browsersync](https://www.browsersync.io/) installed globally.
+
+```bash
+browser-sync start --server -w --startPath tests/test.html
+```

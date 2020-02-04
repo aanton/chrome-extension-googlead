@@ -1,0 +1,135 @@
+{
+  "startedDateTime": "2020-02-01T00:00:02.000Z",
+  "time": 200.0,
+  "request": {
+    "method": "GET",
+    "url": "https://securepubads.g.doubleclick.net/gampad/ads?...",
+    "httpVersion": "http/2.0+quic/46",
+    "headers": [
+      {
+        "name": ":method",
+        "value": "GET"
+      },
+      {
+        "name": ":authority",
+        "value": "securepubads.g.doubleclick.net"
+      },
+      {
+        "name": ":scheme",
+        "value": "https"
+      },
+      {
+        "name": ":path",
+        "value": "/gampad/ads?..."
+      },
+      {
+        "name": "sec-ch-ua",
+        "value": "\"Google Chrome 79\""
+      },
+      {
+        "name": "sec-fetch-dest",
+        "value": "empty"
+      },
+      {
+        "name": "user-agent",
+        "value": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36"
+      },
+      {
+        "name": "accept",
+        "value": "*/*"
+      },
+      {
+        "name": "origin",
+        "value": "http://localhost"
+      },
+      {
+        "name": "sec-fetch-site",
+        "value": "cross-site"
+      },
+      {
+        "name": "sec-fetch-mode",
+        "value": "cors"
+      },
+      {
+        "name": "referer",
+        "value": "http://localhost/"
+      },
+      {
+        "name": "accept-encoding",
+        "value": "gzip, deflate, br"
+      },
+      {
+        "name": "accept-language",
+        "value": "en-US,en;q=0.9,es;q=0.8"
+      },
+      {
+        "name": "cookie",
+        "value": ""
+      }
+    ],
+    "queryString": [
+      {
+        "name": "gdfp_req",
+        "value": "1"
+      },
+      {
+        "name": "correlator",
+        "value": "2"
+      },
+      {
+        "name": "iu_parts",
+        "value": "ID%2Csite%2Chome%2Cportada%2CLeft1%2CRight1"
+      },
+      {
+        "name": "prev_iu_szs",
+        "value": "600x300%7C600x400%2C300x300%7C300x600"
+      },
+      {
+        "name": "prev_scp",
+        "value": "key3%3Dvalue3y%26key4%3Dvalue4y%7Ckey3%3Dvalue3z%26key4%3Dvalue4z"
+      },
+      {
+        "name": "cust_params",
+        "value": "key1%3Dvalue1%26key2%3Dvalue2"
+      }
+    ],
+    "cookies": [],
+    "headersSize": -1,
+    "bodySize": 0
+  },
+  "response": {
+    "status": 200,
+    "statusText": "",
+    "httpVersion": "http/2.0+quic/46",
+    "headers": [
+      {
+        "name": "status",
+        "value": "200"
+      },
+      {
+        "name": "google-creative-id",
+        "value": "creative-1y,creative-2z"
+      },
+      {
+        "name": "google-lineitem-id",
+        "value": "lineitem-1y,lineitem-2z"
+      }
+    ],
+    "cookies": [],
+    "content": {
+      "size": 1000,
+      "mimeType": "text/plain"
+    },
+    "redirectURL": "",
+    "headersSize": -1,
+    "bodySize": -1,
+    "_transferSize": 2000
+  },
+  "cache": {},
+  "timings": {},
+  "serverIPAddress": "127.0.0.1",
+  "_initiator": {},
+  "_priority": "High",
+  "_resourceType": "xhr",
+  "pageref": "page_2"
+}
