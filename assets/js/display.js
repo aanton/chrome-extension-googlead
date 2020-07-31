@@ -37,7 +37,7 @@ const displayNormalAdRequest = function(data) {
 
   const html = `
 <div class="block-ads normal-ad ${isAnonymous ? 'anonymous' : ''}">
-  ${getSlotHtml(data)}
+  ${getSlotHtml(data, false)}
 </div>
   `;
   displayBlock(html);
@@ -51,13 +51,14 @@ const displayMultipleAdsRequest = function(data) {
   const html = `
 <div class="block-ads multiple-ads ${isAnonymous ? 'anonymous' : ''}">
   <h2>SRA ${adUnitPrefix} for ${slots}</h2>
-  ${data.map(_data => getSlotHtml(_data)).join('')}
+  ${getGdprHtml(data[0])}
+  ${data.map(_data => getSlotHtml(_data, true)).join('')}
 </div>
   `;
   displayBlock(html);
 };
 
-const getSlotHtml = function(data) {
+const getSlotHtml = function(data, isMultipleRequest) {
   return `
 <div class="slot">
   <h3>${data.adUnit}</h3>
@@ -68,9 +69,19 @@ const getSlotHtml = function(data) {
     &bullet; creativeId: ${data.creativeId}
     &bullet; lineitemId: ${data.lineitemId}
   </div>
+  ${!isMultipleRequest ? getGdprHtml(data) : ''}
 </div>
   `;
 };
+
+const getGdprHtml = function(data) {
+  return `
+<div class="gdpr">
+  &bullet; gdpr: ${data.gdpr}
+  &bullet; gdpr_consent: ${data.gdprConsent}
+</div>
+  `;
+}
 
 const displayBlock = function(message) {
   if (typeof message == 'object') {

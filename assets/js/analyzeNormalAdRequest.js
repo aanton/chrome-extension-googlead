@@ -17,6 +17,10 @@ export const analyzeNormalAdRequest = function(request) {
   const creativeId = readHeader(request.response.headers, 'google-creative-id');
   const lineitemId = readHeader(request.response.headers, 'google-lineitem-id');
 
+  let gdpr = readQueryParameter(request.request.queryString, 'gdpr');
+  gdpr = gdpr !== false ? gdpr : undefined;
+  const gdprConsent = readQueryParameter(request.request.queryString, 'gdpr_consent') || undefined;
+
   return {
     adUnit,
     adUnitPrefix,
@@ -27,5 +31,7 @@ export const analyzeNormalAdRequest = function(request) {
     isAnonymous,
     creativeId,
     lineitemId,
+    gdpr,
+    gdprConsent,
   };
 };

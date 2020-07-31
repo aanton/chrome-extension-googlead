@@ -91,6 +91,14 @@
       {
         "name": "cust_params",
         "value": "key1%3Dvalue1%26key2%3Dvalue2"
+      },
+      {
+        "name": "gdpr",
+        "value": "1"
+      },
+      {
+        "name": "gdpr_consent",
+        "value": "ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz"
       }
     ],
     "cookies": [],

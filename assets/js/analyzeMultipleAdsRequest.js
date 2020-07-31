@@ -23,6 +23,10 @@ export const analyzeMultipleAdsRequest = function(request) {
   creativeId = creativeId ? creativeId.split(',') : [];
   lineitemId = lineitemId ? lineitemId.split(',') : [];
 
+  let gdpr = readQueryParameter(request.request.queryString, 'gdpr');
+  gdpr = gdpr !== false ? gdpr : undefined;
+  const gdprConsent = readQueryParameter(request.request.queryString, 'gdpr_consent') || undefined;
+
   return slots.map((slot, index) => {
     const adUnit = `${adUnitPrefix}/${slot}`;
 
@@ -36,6 +40,8 @@ export const analyzeMultipleAdsRequest = function(request) {
       isAnonymous,
       creativeId: creativeId[index],
       lineitemId: lineitemId[index],
+      gdpr,
+      gdprConsent,
     };
   });
 };

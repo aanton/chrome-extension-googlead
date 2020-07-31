@@ -57,3 +57,7 @@ h1 {
 .block-ads.normal-ad h3 {
   background-color: hsl(200, 90%, 80%);
 }
+
+.block-ads.multiple-ads .gdpr {
+  margin-bottom: 0.5em;
+}
