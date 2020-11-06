@@ -33,13 +33,11 @@ const displayNavigation = function(url) {
 };
 
 const displayAdsRequest = function(data) {
-  const adUnitPrefix = data[0].adUnitPrefix;
-  const slots = data.map(_data => _data.slot).join(',');
   const isAnonymous = data[0].isAnonymous;
 
   const html = `
 <div class="block-ads multiple-ads ${isAnonymous ? 'anonymous' : ''}">
-  <h2>${adUnitPrefix} for ${slots}</h2>
+  <h2>Request for ${data.length} ${data.length === 1 ? 'slot' : 'slots'}</h2>
   ${getGdprHtml(data[0])}
   ${data.map(_data => getSlotHtml(_data, true)).join('')}
 </div>

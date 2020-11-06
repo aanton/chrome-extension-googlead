@@ -5,14 +5,18 @@ export const isAdsRequests = function (request) {
 };
 
 export const analyzeAdsRequests = function (request) {
-  let sizes = readQueryParameter(request.request.queryString, 'prev_iu_szs').split(',');
-  const count = sizes.length;
+  const adUnitsCodes = readQueryParameter(request.request.queryString, 'enc_prev_ius').split(',');
+  const adUnitsRaw = readQueryParameter(request.request.queryString, 'iu_parts').split(',');
 
-  const adUnitsRaw = readQueryParameter(request.request.queryString, 'iu_parts');
-  const tokens = adUnitsRaw.split(',');
-  const adUnitPrefix = tokens.slice(0, -1 * count).join('/');
-  const slots = tokens.slice(-1 * count);
+  const adUnits = adUnitsCodes.map((code) => {
+    return code
+      .split('/')
+      .filter(Boolean)
+      .map((id) => adUnitsRaw[id])
+      .join('/');
+  });
 
+  const sizes = readQueryParameter(request.request.queryString, 'prev_iu_szs').split(',');
   let slotTargetings = readQueryParameter(request.request.queryString, 'prev_scp');
   const globalTargetings = readQueryParameter(request.request.queryString, 'cust_params');
   const isNPA = readQueryParameter(request.request.queryString, 'npa') === '1';
@@ -28,13 +32,9 @@ export const analyzeAdsRequests = function (request) {
 
   const isAnonymous = isNPA || !gdprConsent;
 
-  return slots.map((slot, index) => {
-    const adUnit = `${adUnitPrefix}/${slot}`;
-
+  return adUnits.map((adUnit, index) => {
     return {
       adUnit,
-      adUnitPrefix,
-      slot,
       sizes: sizes[index],
       slotTargetings: slotTargetings[index] || '',
       globalTargetings: globalTargetings || '',
