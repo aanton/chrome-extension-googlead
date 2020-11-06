@@ -1,5 +1,5 @@
-import { initDisplay, displayNavigation, displayMultipleAdsRequest } from '../assets/js/display.js';
-import { analyzeMultipleAdsRequest } from '../assets/js/analyzeMultipleAdsRequest.js';
+import { initDisplay, displayNavigation, displayAdsRequest } from '../assets/js/display.js';
+import { analyzeAdsRequests } from '../assets/js/analyze-ads-requests.js';
 
 initDisplay();
 displayNavigation(document.location);
@@ -7,7 +7,7 @@ displayNavigation(document.location);
 const fetchRequest = async function(url) {
   const response = await fetch(url);
   const json = await response.json();
-  displayMultipleAdsRequest(analyzeMultipleAdsRequest(json));
+  displayAdsRequest(analyzeAdsRequests(json));
 };
 
 fetchRequest('./request-multiple-anonymous.json');
