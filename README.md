@@ -20,8 +20,8 @@ If you are tired to check the "Network panel" to review the parameters sent to G
 
 ## 👉 Features
 
-* Support for single-request & multiple-request mode
-* Visual difference of anonymous & personalized ads requests
+* Display GDPR information
+* Visual difference when NPA flag is detected or GDPR consent string is empty
 
 ## 🚧 Tests
 
