@@ -1,10 +1,10 @@
 import { readQueryParameter, readHeader } from './utils.js';
 
-export const isAdsRequests = function(request) {
+export const isAdsRequests = function (request) {
   return !!readQueryParameter(request.request.queryString, 'iu_parts');
 };
 
-export const analyzeAdsRequests = function(request) {
+export const analyzeAdsRequests = function (request) {
   let sizes = readQueryParameter(request.request.queryString, 'prev_iu_szs').split(',');
   const count = sizes.length;
 
@@ -15,7 +15,7 @@ export const analyzeAdsRequests = function(request) {
 
   let slotTargetings = readQueryParameter(request.request.queryString, 'prev_scp');
   const globalTargetings = readQueryParameter(request.request.queryString, 'cust_params');
-  const isAnonymous = readQueryParameter(request.request.queryString, 'npa') === '1';
+  const isNPA = readQueryParameter(request.request.queryString, 'npa') === '1';
   let creativeId = readHeader(request.response.headers, 'google-creative-id');
   let lineitemId = readHeader(request.response.headers, 'google-lineitem-id');
 
@@ -23,9 +23,10 @@ export const analyzeAdsRequests = function(request) {
   creativeId = creativeId ? creativeId.split(',') : [];
   lineitemId = lineitemId ? lineitemId.split(',') : [];
 
-  let gdpr = readQueryParameter(request.request.queryString, 'gdpr');
-  gdpr = gdpr !== false ? gdpr : undefined;
+  const gdpr = readQueryParameter(request.request.queryString, 'gdpr') || undefined;
   const gdprConsent = readQueryParameter(request.request.queryString, 'gdpr_consent') || undefined;
+
+  const isAnonymous = isNPA || !gdprConsent;
 
   return slots.map((slot, index) => {
     const adUnit = `${adUnitPrefix}/${slot}`;
@@ -37,6 +38,7 @@ export const analyzeAdsRequests = function(request) {
       sizes: sizes[index],
       slotTargetings: slotTargetings[index] || '',
       globalTargetings: globalTargetings || '',
+      isNPA,
       isAnonymous,
       creativeId: creativeId[index],
       lineitemId: lineitemId[index],

@@ -39,7 +39,7 @@ const displayAdsRequest = function(data) {
 
   const html = `
 <div class="block-ads multiple-ads ${isAnonymous ? 'anonymous' : ''}">
-  <h2>SRA ${adUnitPrefix} for ${slots}</h2>
+  <h2>${adUnitPrefix} for ${slots}</h2>
   ${getGdprHtml(data[0])}
   ${data.map(_data => getSlotHtml(_data, true)).join('')}
 </div>
@@ -66,6 +66,7 @@ const getSlotHtml = function(data, isMultipleRequest) {
 const getGdprHtml = function(data) {
   return `
 <div class="gdpr">
+  ${data.isNPA ? '&bullet; NPA' : ''}
   &bullet; gdpr: ${data.gdpr}
   &bullet; gdpr_consent: ${data.gdprConsent}
 </div>
