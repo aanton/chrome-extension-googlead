@@ -32,7 +32,7 @@ const displayNavigation = function(url) {
   displayBlock(`<div class="navigation">Navigate to <span>${url}</span></div>`);
 };
 
-const displayMultipleAdsRequest = function(data) {
+const displayAdsRequest = function(data) {
   const adUnitPrefix = data[0].adUnitPrefix;
   const slots = data.map(_data => _data.slot).join(',');
   const isAnonymous = data[0].isAnonymous;
@@ -87,4 +87,4 @@ const formatParameters = function(str) {
   return params.join(' &#x2010; ');
 };
 
-export { initDisplay, displayNavigation, displayMultipleAdsRequest };
+export { initDisplay, displayNavigation, displayAdsRequest };

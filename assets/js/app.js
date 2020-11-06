@@ -1,5 +1,5 @@
-import { initDisplay, displayNavigation, displayMultipleAdsRequest } from './display.js';
-import { isMultipleAdsRequest, analyzeMultipleAdsRequest } from './analyzeMultipleAdsRequest.js';
+import { initDisplay, displayNavigation, displayAdsRequest } from './display.js';
+import { isAdsRequests, analyzeAdsRequests } from './analyze-ads-requests.js';
 
 const init = function() {
   initDisplay();
@@ -22,8 +22,8 @@ const handleRequest = function(request) {
     return;
   }
 
-  if (isMultipleAdsRequest(request)) {
-    displayMultipleAdsRequest(analyzeMultipleAdsRequest(request));
+  if (isAdsRequests(request)) {
+    displayAdsRequest(analyzeAdsRequests(request));
     return;
   }
 };
