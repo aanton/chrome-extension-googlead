@@ -1,5 +1,4 @@
-import { initDisplay, displayNavigation, displayNormalAdRequest, displayMultipleAdsRequest } from './display.js';
-import { isNormalAdRequest, analyzeNormalAdRequest } from './analyzeNormalAdRequest.js';
+import { initDisplay, displayNavigation, displayMultipleAdsRequest } from './display.js';
 import { isMultipleAdsRequest, analyzeMultipleAdsRequest } from './analyzeMultipleAdsRequest.js';
 
 const init = function() {
@@ -20,11 +19,6 @@ const handleRequest = function(request) {
   }
 
   if (request.response.status === 400 && request.response.statusText === 'Service Worker Fallback Required') {
-    return;
-  }
-
-  if (isNormalAdRequest(request)) {
-    displayNormalAdRequest(analyzeNormalAdRequest(request));
     return;
   }
 
