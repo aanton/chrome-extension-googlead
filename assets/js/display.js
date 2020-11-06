@@ -32,17 +32,6 @@ const displayNavigation = function(url) {
   displayBlock(`<div class="navigation">Navigate to <span>${url}</span></div>`);
 };
 
-const displayNormalAdRequest = function(data) {
-  const isAnonymous = data.isAnonymous;
-
-  const html = `
-<div class="block-ads normal-ad ${isAnonymous ? 'anonymous' : ''}">
-  ${getSlotHtml(data, false)}
-</div>
-  `;
-  displayBlock(html);
-};
-
 const displayMultipleAdsRequest = function(data) {
   const adUnitPrefix = data[0].adUnitPrefix;
   const slots = data.map(_data => _data.slot).join(',');
@@ -98,4 +87,4 @@ const formatParameters = function(str) {
   return params.join(' &#x2010; ');
 };
 
-export { initDisplay, displayNavigation, displayNormalAdRequest, displayMultipleAdsRequest };
+export { initDisplay, displayNavigation, displayMultipleAdsRequest };

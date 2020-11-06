@@ -50,14 +50,6 @@ h1 {
   background-color: hsl(0, 75%, 85%);
 }
 
-.block-ads.normal-ad.anonymous h3 {
-  background-color: hsl(0, 90%, 80%);
-}
-
-.block-ads.normal-ad h3 {
-  background-color: hsl(200, 90%, 80%);
-}
-
 .block-ads.multiple-ads .gdpr {
   margin-bottom: 0.5em;
 }
