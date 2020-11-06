@@ -10,5 +10,5 @@ const fetchRequest = async function(url) {
   displayAdsRequest(analyzeAdsRequests(json));
 };
 
-fetchRequest('./request-multiple-anonymous.json');
-fetchRequest('./request-multiple.json');
+fetchRequest('./request-anonymous.json');
+fetchRequest('./request.json');
