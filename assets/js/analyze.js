@@ -47,3 +47,35 @@ export const analyzeAdsRequest = function (request) {
     };
   });
 };
+
+export const isBasicAdRequest = function (request) {
+  return !!readQueryParameter(request.request.queryString, 'iu');
+};
+
+export const analyzeBasicAdRequest = function (request) {
+  const adUnit = readQueryParameter(request.request.queryString, 'iu');
+  const sizes = readQueryParameter(request.request.queryString, 'sz');
+  const slotTargetings = readQueryParameter(request.request.queryString, 'scp');
+  const globalTargetings = readQueryParameter(request.request.queryString, 'cust_params');
+  const isNPA = readQueryParameter(request.request.queryString, 'npa') === '1';
+  const creativeId = readHeader(request.response.headers, 'google-creative-id');
+  const lineitemId = readHeader(request.response.headers, 'google-lineitem-id');
+
+  const gdpr = readQueryParameter(request.request.queryString, 'gdpr') || undefined;
+  const gdprConsent = readQueryParameter(request.request.queryString, 'gdpr_consent') || undefined;
+
+  const isAnonymous = isNPA || !gdprConsent;
+
+  return {
+    adUnit,
+    sizes,
+    slotTargetings,
+    globalTargetings,
+    isNPA,
+    isAnonymous,
+    creativeId: creativeId,
+    lineitemId: lineitemId,
+    gdpr,
+    gdprConsent,
+  };
+};
