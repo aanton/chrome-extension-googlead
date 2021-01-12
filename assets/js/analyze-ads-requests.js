@@ -1,10 +1,10 @@
 import { readQueryParameter, readHeader } from './utils.js';
 
-export const isAdsRequests = function (request) {
+export const isAdsRequest = function (request) {
   return !!readQueryParameter(request.request.queryString, 'iu_parts');
 };
 
-export const analyzeAdsRequests = function (request) {
+export const analyzeAdsRequest = function (request) {
   const adUnitsCodes = readQueryParameter(request.request.queryString, 'enc_prev_ius').split(',');
   const adUnitsRaw = readQueryParameter(request.request.queryString, 'iu_parts').split(',');
 
