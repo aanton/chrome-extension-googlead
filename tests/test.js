@@ -1,5 +1,5 @@
 import { initDisplay, displayNavigation, displayAdsRequest } from '../assets/js/display.js';
-import { analyzeAdsRequest } from '../assets/js/analyze-ads-requests.js';
+import { analyzeAdsRequest } from '../assets/js/analyze.js';
 
 initDisplay();
 displayNavigation(document.location);

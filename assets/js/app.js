@@ -1,5 +1,5 @@
 import { initDisplay, displayNavigation, displayAdsRequest } from './display.js';
-import { isAdsRequest, analyzeAdsRequest } from './analyze-ads-requests.js';
+import { isAdsRequest, analyzeAdsRequest } from './analyze.js';
 
 const init = function() {
   initDisplay();
