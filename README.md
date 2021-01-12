@@ -20,6 +20,7 @@ If you are tired to check the "Network panel" to review the parameters sent to G
 
 ## 👉 Features
 
+* Support for normal ads requests (web pages) & basic ad requests (AMP pages & video players)
 * Display GDPR information
 * Visual difference when NPA flag is detected or GDPR consent string is empty
 
