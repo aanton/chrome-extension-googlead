@@ -1,5 +1,5 @@
 import { initDisplay, displayNavigation, displayAdsRequest } from './display.js';
-import { isAdsRequests, analyzeAdsRequests } from './analyze-ads-requests.js';
+import { isAdsRequest, analyzeAdsRequest } from './analyze-ads-requests.js';
 
 const init = function() {
   initDisplay();
@@ -22,8 +22,8 @@ const handleRequest = function(request) {
     return;
   }
 
-  if (isAdsRequests(request)) {
-    displayAdsRequest(analyzeAdsRequests(request));
+  if (isAdsRequest(request)) {
+    displayAdsRequest(analyzeAdsRequest(request));
     return;
   }
 };
