@@ -41,13 +41,13 @@ const displayAdsRequest = function(data) {
 <div class="block-ads multiple-ads ${isAnonymous ? 'anonymous' : ''}">
   <h2>Request for ${data.length} ${label} (${datetime})</h2>
   ${getGdprHtml(data[0])}
-  ${data.map(_data => getSlotHtml(_data, true)).join('')}
+  ${data.map(_data => getSlotHtml(_data)).join('')}
 </div>
   `;
   displayBlock(html);
 };
 
-const getSlotHtml = function(data, isMultipleRequest) {
+const getSlotHtml = function(data) {
   return `
 <div class="slot">
   <h3>${data.adUnit}</h3>
@@ -58,7 +58,6 @@ const getSlotHtml = function(data, isMultipleRequest) {
     &bullet; creativeId: ${data.creativeId}
     &bullet; lineitemId: ${data.lineitemId}
   </div>
-  ${!isMultipleRequest ? getGdprHtml(data) : ''}
 </div>
   `;
 };
