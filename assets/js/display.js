@@ -34,10 +34,12 @@ const displayNavigation = function(url) {
 
 const displayAdsRequest = function(data) {
   const isAnonymous = data[0].isAnonymous;
+  const label = data.length === 1 ? 'slot' : 'slots';
+  const datetime = new Date().toLocaleString();
 
   const html = `
 <div class="block-ads multiple-ads ${isAnonymous ? 'anonymous' : ''}">
-  <h2>Request for ${data.length} ${data.length === 1 ? 'slot' : 'slots'}</h2>
+  <h2>Request for ${data.length} ${label} (${datetime})</h2>
   ${getGdprHtml(data[0])}
   ${data.map(_data => getSlotHtml(_data, true)).join('')}
 </div>
