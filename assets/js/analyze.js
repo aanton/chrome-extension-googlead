@@ -31,6 +31,7 @@ export const analyzeAdsRequest = function (request) {
   const gdprConsent = readQueryParameter(request.request.queryString, 'gdpr_consent') || undefined;
 
   const isAnonymous = isNPA || !gdprConsent;
+  const ppid = readQueryParameter(request.request.queryString, 'ppid') || undefined;
 
   return adUnits.map((adUnit, index) => {
     return {
@@ -40,6 +41,7 @@ export const analyzeAdsRequest = function (request) {
       globalTargetings: globalTargetings || '',
       isNPA,
       isAnonymous,
+      ppid,
       creativeId: creativeId[index],
       lineitemId: lineitemId[index],
       gdpr,
@@ -65,6 +67,7 @@ export const analyzeBasicAdRequest = function (request) {
   const gdprConsent = readQueryParameter(request.request.queryString, 'gdpr_consent') || undefined;
 
   const isAnonymous = isNPA || !gdprConsent;
+  const ppid = readQueryParameter(request.request.queryString, 'ppid') || undefined;
 
   return {
     adUnit,
@@ -73,6 +76,7 @@ export const analyzeBasicAdRequest = function (request) {
     globalTargetings,
     isNPA,
     isAnonymous,
+    ppid,
     creativeId: creativeId,
     lineitemId: lineitemId,
     gdpr,

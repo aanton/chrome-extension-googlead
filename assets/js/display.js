@@ -66,9 +66,10 @@ const getSlotHtml = function(data, isMultipleRequest) {
 const getGdprHtml = function(data) {
   return `
 <div class="gdpr">
-  ${data.isNPA ? '&bullet; NPA' : ''}
-  &bullet; gdpr: ${data.gdpr}
-  &bullet; gdpr_consent: ${data.gdprConsent}
+${data.isNPA ? '&bullet; NPA' : ''}
+&bullet; gdpr: ${data.gdpr}<br />
+&bullet; gdpr_consent: ${data.gdprConsent}<br />
+&bullet; ppid: ${data.ppid}
 </div>
   `;
 }
