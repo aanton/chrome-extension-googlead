@@ -53,3 +53,11 @@ h1 {
 .block-ads.multiple-ads .gdpr {
   margin-bottom: 0.5em;
 }
+
+.slot.unfill {
+  background-color: #fbf1d3;
+}
+
+.slot.unfill h3 {
+  background-color: #fada9d;
+}

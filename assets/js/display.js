@@ -49,7 +49,7 @@ const displayAdsRequest = function(data) {
 
 const getSlotHtml = function(data) {
   return `
-<div class="slot">
+<div class="slot ${data.isUnfill ? 'unfill' : ''}">
   <h3>${data.adUnit}</h3>
   <div>&bullet; sizes: ${data.sizes}</div>
   ${data.globalTargetings ? `<div>&bullet; globalTargetings: ${formatParameters(data.globalTargetings)}</div>` : ''}
