@@ -17,12 +17,24 @@ const clearAll = function() {
 };
 
 const initDisplay = function() {
-  if (autoclear) {
-    return removeClearButton();
-  }
-
+  if (autoclear) removeClearButton();
   clearEl.addEventListener('click', handleClearButton);
+
+  configureListenerForShortenedValues();
 };
+
+const configureListenerForShortenedValues = function() {
+  document.addEventListener('click', (e) => {
+    console.log(e.target);
+    const element = e.target;
+
+    if (!element.classList.contains('shortened')) return;
+
+    const content = element.textContent;
+    element.textContent = element.dataset.value;
+    element.dataset.value = content;
+  })
+}
 
 const displayNavigation = function(url) {
   if (autoclear) {
@@ -67,7 +79,7 @@ const getGdprHtml = function(data) {
 <div class="gdpr">
 ${data.isNPA ? '&bullet; NPA' : ''}
 &bullet; gdpr: ${data.gdpr}<br />
-&bullet; gdpr_consent: ${data.gdprConsent}<br />
+&bullet; gdpr_consent: ${formatLongValue(data.gdprConsent)}<br />
 &bullet; ppid: ${data.ppid}
 </div>
   `;
@@ -85,7 +97,15 @@ const displayBlock = function(message) {
 const formatParameters = function(str) {
   const params = str.split('&');
   params.sort();
-  return params.join(' &#x2010; ');
+  return params.map((param) => formatLongValue(param)).join(' &#x2010; ');
+};
+
+const formatLongValue = function(value, maxLength = 40) {
+  if (!value || value.length <= maxLength) {
+    return value;
+  }
+
+  return `<span class="shortened" data-value="${value}">${value.slice(0, 40)}...</span>`;
 };
 
 export { initDisplay, displayNavigation, displayAdsRequest };
