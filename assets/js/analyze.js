@@ -46,6 +46,7 @@ export const analyzeAdsRequest = function (request) {
       lineitemId: lineitemId[index],
       gdpr,
       gdprConsent,
+      isUnfill: lineitemId[index] === '-2',
     };
   });
 };

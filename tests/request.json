@@ -90,7 +90,7 @@
       },
       {
         "name": "prev_scp",
-        "value": "key3%3Dvalue3y%26key4%3Dvalue4y%7Ckey3%3Dvalue3z%26key4%3Dvalue4z"
+        "value": "key3%3Dvalue3a%26key4%3Dvalue4a%7Ckey3%3Dvalue3b%26key4%3Dvalue4b"
       },
       {
         "name": "cust_params",
@@ -120,11 +120,11 @@
       },
       {
         "name": "google-creative-id",
-        "value": "creative-1y,creative-2z"
+        "value": "creative-1a,-2"
       },
       {
         "name": "google-lineitem-id",
-        "value": "lineitem-1y,lineitem-2z"
+        "value": "lineitem-1a,-2"
       }
     ],
     "cookies": [],
