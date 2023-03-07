@@ -62,6 +62,11 @@ h1 {
   background-color: #fada9d;
 }
 
+.block-ads .slot a {
+  color: inherit;
+  text-decoration: underline;
+}
+
 .shortened {
   cursor: pointer;
 }

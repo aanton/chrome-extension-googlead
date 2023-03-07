@@ -1,3 +1,4 @@
+let networkId;
 const autoclear = true;
 
 const contentEl = document.getElementById('content');
@@ -44,6 +45,10 @@ const displayNavigation = function(url) {
     clearAll();
   }
 
+  chrome.storage.sync.get({networkId: ''}, (data) => {
+    networkId = data.networkId;
+  });
+
   displayBlock(`<div class="navigation">Navigate to <span>${url}</span></div>`);
 };
 
@@ -71,7 +76,7 @@ const getSlotHtml = function(data) {
   ${data.slotTargetings ? `<div>&bullet; slotTargetings: ${formatParameters(data.slotTargetings)}</div>` : ''}
   <div>
     &bullet; creativeId: ${data.creativeId}
-    &bullet; lineitemId: ${data.lineitemId}
+    &bullet; lineitemId: ${formatLineItem(data.lineitemId)}
   </div>
 </div>
   `;
@@ -110,5 +115,13 @@ const formatLongValue = function(value, maxLength = 40) {
 
   return `<span class="shortened" data-value="${value}">${value.slice(0, 40)}...</span>`;
 };
+
+const formatLineItem = function(value) {
+  if (!networkId) return value;
+  if (value === '-1' || value === '-2') return value;
+
+  const url = `https://admanager.google.com/${networkId}#delivery/line_item/detail/line_item_id=${value}&li_tab=settings`;
+  return `<a href="${url}" target="_blank">${value}</a>`
+}
 
 export { initDisplay, displayNavigation, displayAdsRequest };
