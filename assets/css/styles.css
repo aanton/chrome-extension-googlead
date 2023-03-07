@@ -50,8 +50,8 @@ h1 {
   background-color: hsl(0, 75%, 85%);
 }
 
-.block-ads.multiple-ads .gdpr {
-  margin-bottom: 0.5em;
+.block-ads.multiple-ads h3 {
+  margin-top: 0.5em;
 }
 
 .slot.unfill {
