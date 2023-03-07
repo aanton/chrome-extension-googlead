@@ -41,6 +41,7 @@ const displayAdsRequest = function(data) {
 <div class="block-ads multiple-ads ${isAnonymous ? 'anonymous' : ''}">
   <h2>Request for ${data.length} ${label} (${datetime})</h2>
   ${getGdprHtml(data[0])}
+  ${data[0].globalTargetings ? `<div>&bullet; globalTargetings: ${formatParameters(data[0].globalTargetings)}</div>` : ''}
   ${data.map(_data => getSlotHtml(_data)).join('')}
 </div>
   `;
@@ -52,7 +53,6 @@ const getSlotHtml = function(data) {
 <div class="slot ${data.isUnfill ? 'unfill' : ''}">
   <h3>${data.adUnit}</h3>
   <div>&bullet; sizes: ${data.sizes}</div>
-  ${data.globalTargetings ? `<div>&bullet; globalTargetings: ${formatParameters(data.globalTargetings)}</div>` : ''}
   ${data.slotTargetings ? `<div>&bullet; slotTargetings: ${formatParameters(data.slotTargetings)}</div>` : ''}
   <div>
     &bullet; creativeId: ${data.creativeId}

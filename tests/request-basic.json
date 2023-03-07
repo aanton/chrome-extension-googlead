@@ -85,6 +85,10 @@
         "value": "key1%3Dvalue1%26key2%3Dvalue2"
       },
       {
+        "name": "cust_params",
+        "value": "key3%3Dvalue3%26key4%3Dvalue4"
+      },
+      {
         "name": "gdpr",
         "value": "1"
       },
