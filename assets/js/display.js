@@ -76,7 +76,7 @@ const getSlotHtml = function(data) {
   ${data.slotTargetings ? `<div>&bullet; slotTargetings: ${formatParameters(data.slotTargetings)}</div>` : ''}
   <div>
     &bullet; creativeId: ${data.creativeId}
-    &bullet; lineitemId: ${formatLineItem(data.lineitemId)}
+    &bullet; lineitemId: ${formatLineItemId(data.lineitemId)}
   </div>
 </div>
   `;
@@ -116,7 +116,7 @@ const formatLongValue = function(value, maxLength = 40) {
   return `<span class="shortened" data-value="${value}">${value.slice(0, 40)}...</span>`;
 };
 
-const formatLineItem = function(value) {
+const formatLineItemId = function(value) {
   if (!networkId) return value;
   if (value === '-1' || value === '-2') return value;
 
