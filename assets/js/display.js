@@ -1,6 +1,7 @@
 const autoclear = true;
 
 const contentEl = document.getElementById('content');
+const optionsEl = document.getElementById('options');
 const clearEl = document.getElementById('clear');
 
 const removeClearButton = function() {
@@ -17,6 +18,8 @@ const clearAll = function() {
 };
 
 const initDisplay = function() {
+  optionsEl.addEventListener('click', () => chrome.runtime.openOptionsPage());
+
   if (autoclear) removeClearButton();
   clearEl.addEventListener('click', handleClearButton);
 
