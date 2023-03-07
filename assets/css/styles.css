@@ -61,3 +61,7 @@ h1 {
 .slot.unfill h3 {
   background-color: #fada9d;
 }
+
+.shortened {
+  cursor: pointer;
+}
