@@ -17,6 +17,11 @@ form {
   gap: 1em;
 }
 
+.info {
+  font-size: 0.9em;
+  color: #505050;
+}
+
 #status {
   display: none;
   padding: 0.5em;

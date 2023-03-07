@@ -75,7 +75,7 @@ const getSlotHtml = function(data) {
   <div>&bullet; sizes: ${data.sizes}</div>
   ${data.slotTargetings ? `<div>&bullet; slotTargetings: ${formatParameters(data.slotTargetings)}</div>` : ''}
   <div>
-    &bullet; creativeId: ${data.creativeId}
+    &bullet; creativeId: ${formatCreativeId(data.creativeId)}
     &bullet; lineitemId: ${formatLineItemId(data.lineitemId)}
   </div>
 </div>
@@ -121,6 +121,14 @@ const formatLineItemId = function(value) {
   if (value === '-1' || value === '-2') return value;
 
   const url = `https://admanager.google.com/${networkId}#delivery/line_item/detail/line_item_id=${value}&li_tab=settings`;
+  return `<a href="${url}" target="_blank">${value}</a>`
+}
+
+const formatCreativeId = function(value) {
+  if (!networkId) return value;
+  if (value === '-1' || value === '-2') return value;
+
+  const url = `https://admanager.google.com/${networkId}#creatives/creative/detail/creative_id=${value}`;
   return `<a href="${url}" target="_blank">${value}</a>`
 }
 
