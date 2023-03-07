@@ -1,0 +1,24 @@
+body {
+  margin: 1em;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1em;
+}
+
+h1 {
+  font-size: 1.25em;
+  margin: 0.5em 0;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+#status {
+  display: none;
+  padding: 0.5em;
+  background-color: hsl(200, 75%, 85%);
+}
