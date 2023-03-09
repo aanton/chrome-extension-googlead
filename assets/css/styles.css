@@ -39,11 +39,11 @@ h1 {
 }
 
 .block-ads.anonymous {
-  background-color: hsl(0, 60%, 90%);
+  background-color: hsl(0, 60%, 90%) !important;
 }
 
 .block-ads.anonymous h2 {
-  background-color: hsl(0, 90%, 80%);
+  background-color: hsl(0, 90%, 80%) !important;
 }
 
 .block-ads.anonymous h3 {
@@ -54,12 +54,16 @@ h1 {
   margin-top: 0.5em;
 }
 
-.slot.unfill {
-  background-color: #fbf1d3;
+.block-ads.unfill, .slot.unfill {
+  background-color: hsl(39, 76%, 94%);
+}
+
+.block-ads.unfill h2 {
+  background-color: hsl(39, 90%, 80%);
 }
 
 .slot.unfill h3 {
-  background-color: #fada9d;
+  background-color: hsl(39, 83%, 87%);
 }
 
 .block-ads .slot a {
