@@ -1,10 +1,10 @@
 {
-  "startedDateTime": "2020-02-01T00:00:01.000Z",
-  "time": 100.0,
+  "startedDateTime": "2020-02-01T00:00:03.000Z",
+  "time": 300.0,
   "request": {
     "method": "GET",
     "url": "https://securepubads.g.doubleclick.net/gampad/ads?...",
-    "httpVersion": "http/2.0+quic/46",
+    "httpVersion": "h3-29",
     "headers": [
       {
         "name": ":method",
@@ -73,32 +73,28 @@
         "value": "1"
       },
       {
-        "name": "correlator",
-        "value": "1"
+        "name": "iu",
+        "value": "%2FID%2Fsite%2Fhome%2Fportada%2FSticky"
       },
       {
-        "name": "npa",
-        "value": "1"
+        "name": "sz",
+        "value": "320x100"
       },
       {
-        "name": "enc_prev_ius",
-        "value": "/0/1/2/3/4%2C/0/1/2/3/5"
-      },
-      {
-        "name": "iu_parts",
-        "value": "ID%2Csite%2Chome%2Cportada%2Cx01%2CTop"
-      },
-      {
-        "name": "prev_iu_szs",
-        "value": "1x1%2C990x100%7C990x200%7C990x250"
-      },
-      {
-        "name": "prev_scp",
-        "value": "key3%3Dvalue3a%26key4%3Dvalue4a%7Ckey3%3Dvalue3b%26key4%3Dvalue4b"
+        "name": "scp",
+        "value": "key1%3Dvalue1%26key2%3Dvalue2"
       },
       {
         "name": "cust_params",
-        "value": "key1%3Dvalue1%26key2%3Dvalue2"
+        "value": "key3%3Dvalue3%26key4%3Dvalue4"
+      },
+      {
+        "name": "gdpr",
+        "value": "1"
+      },
+      {
+        "name": "gdpr_consent",
+        "value": "ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz"
       }
     ],
     "cookies": [],
@@ -108,30 +104,27 @@
   "response": {
     "status": 200,
     "statusText": "",
-    "httpVersion": "http/2.0+quic/46",
+    "httpVersion": "h3-29",
     "headers": [
       {
-        "name": "status",
-        "value": "200"
+        "name": "google-lineitem-id",
+        "value": "-2"
       },
       {
         "name": "google-creative-id",
-        "value": "creative-1a,-2"
-      },
-      {
-        "name": "google-lineitem-id",
-        "value": "lineitem-1a,-2"
+        "value": "-2"
       }
     ],
     "cookies": [],
     "content": {
       "size": 1000,
-      "mimeType": "text/plain"
+      "mimeType": "text/html"
     },
     "redirectURL": "",
     "headersSize": -1,
     "bodySize": -1,
-    "_transferSize": 2000
+    "_transferSize": 500,
+    "_error": null
   },
   "cache": {},
   "timings": {},

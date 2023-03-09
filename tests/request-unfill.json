@@ -1,6 +1,6 @@
 {
-  "startedDateTime": "2020-02-01T00:00:01.000Z",
-  "time": 100.0,
+  "startedDateTime": "2020-02-01T00:00:02.000Z",
+  "time": 200.0,
   "request": {
     "method": "GET",
     "url": "https://securepubads.g.doubleclick.net/gampad/ads?...",
@@ -74,11 +74,7 @@
       },
       {
         "name": "correlator",
-        "value": "1"
-      },
-      {
-        "name": "npa",
-        "value": "1"
+        "value": "2"
       },
       {
         "name": "enc_prev_ius",
@@ -86,11 +82,11 @@
       },
       {
         "name": "iu_parts",
-        "value": "ID%2Csite%2Chome%2Cportada%2Cx01%2CTop"
+        "value": "ID%2Csite%2Chome%2Cportada%2CLeft1%2CRight1"
       },
       {
         "name": "prev_iu_szs",
-        "value": "1x1%2C990x100%7C990x200%7C990x250"
+        "value": "600x300%7C600x400%2C300x300%7C300x600"
       },
       {
         "name": "prev_scp",
@@ -98,7 +94,15 @@
       },
       {
         "name": "cust_params",
-        "value": "key1%3Dvalue1%26key2%3Dvalue2"
+        "value": "key1%3Dvalue1%26key2%3Dvalue2.0123456789012345678901234567890123456789"
+      },
+      {
+        "name": "gdpr",
+        "value": "1"
+      },
+      {
+        "name": "gdpr_consent",
+        "value": "ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz"
       }
     ],
     "cookies": [],
@@ -116,11 +120,11 @@
       },
       {
         "name": "google-creative-id",
-        "value": "creative-1a,-2"
+        "value": "-2,-2"
       },
       {
         "name": "google-lineitem-id",
-        "value": "lineitem-1a,-2"
+        "value": "-2,-2"
       }
     ],
     "cookies": [],
