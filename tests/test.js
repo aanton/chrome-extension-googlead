@@ -19,6 +19,8 @@ const fetchRequest = async function(url) {
   }
 };
 
-fetchRequest('./request-anonymous.json');
 fetchRequest('./request.json');
+fetchRequest('./request-anonymous.json');
+fetchRequest('./request-unfill.json');
 fetchRequest('./request-basic.json');
+fetchRequest('./request-basic-unfill.json');
