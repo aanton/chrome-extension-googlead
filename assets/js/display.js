@@ -45,9 +45,11 @@ const displayNavigation = function(url) {
     clearAll();
   }
 
-  chrome.storage.sync.get({networkId: ''}, (data) => {
-    networkId = data.networkId;
-  });
+  if (chrome.storage && chrome.storage.sync) {
+    chrome.storage.sync.get({networkId: ''}, (data) => {
+      networkId = data.networkId;
+    });
+  }
 
   displayBlock(`<div class="navigation">Navigate to <span>${url}</span></div>`);
 };
