@@ -44,9 +44,9 @@ export const analyzeAdsRequest = function (request) {
       ppid,
       creativeId: creativeId[index],
       lineitemId: lineitemId[index],
+      isUnfill: lineitemId[index] === '-2',
       gdpr,
       gdprConsent,
-      isUnfill: lineitemId[index] === '-2',
     };
   });
 };
@@ -78,8 +78,9 @@ export const analyzeBasicAdRequest = function (request) {
     isNPA,
     isAnonymous,
     ppid,
-    creativeId: creativeId,
-    lineitemId: lineitemId,
+    creativeId,
+    lineitemId,
+    isUnfill: lineitemId === '-2',
     gdpr,
     gdprConsent,
   };
