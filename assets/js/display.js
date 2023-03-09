@@ -59,8 +59,10 @@ const displayAdsRequest = function(data) {
   const label = data.length === 1 ? 'slot' : 'slots';
   const datetime = new Date().toLocaleString();
 
+  const isUnfill = data.every(_data => _data.isUnfill)
+
   const html = `
-<div class="block-ads multiple-ads ${isAnonymous ? 'anonymous' : ''}">
+<div class="block-ads multiple-ads ${isAnonymous ? 'anonymous' : ''} ${isUnfill ? 'unfill' : ''}">
   <h2>Request for ${data.length} ${label} (${datetime})</h2>
   ${getGdprHtml(data[0])}
   ${data[0].globalTargetings ? `<div>&bullet; globalTargetings: ${formatParameters(data[0].globalTargetings)}</div>` : ''}
