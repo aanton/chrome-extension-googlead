@@ -1,9 +1,10 @@
 {
   "name": "GAM",
-  "version": "0.0.1",
-  "manifest_version": 2,
+  "version": "0.0.2",
+  "manifest_version": 3,
   "description": "Analyze Google Ad Manager requests",
   "devtools_page": "devtools.html",
   "options_page": "options.html",
-  "permissions": ["storage", "tabs", "http://*/*", "https://*/*"]
+  "permissions": ["storage", "tabs"],
+  "host_permissions": ["*://*/*"]
 }
