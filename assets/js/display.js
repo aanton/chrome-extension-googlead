@@ -1,4 +1,20 @@
-let networkId;
+let networkId = '';
+
+if (chrome.storage && chrome.storage.local) {
+  const options = (await chrome.storage.local.get(['networkId']));
+  console.log('Initial options:', options);
+
+  networkId = options.networkId ?? '';
+
+  chrome.storage.onChanged.addListener((changes) => {
+    console.log('Update options', changes)
+
+    if (changes.networkId?.newValue !== undefined) {
+      networkId = changes.networkId.newValue;
+    }
+  });
+}
+
 const autoclear = true;
 
 const contentEl = document.getElementById('content');
@@ -43,12 +59,6 @@ const configureListenerForShortenedValues = function() {
 const displayNavigation = function(url) {
   if (autoclear) {
     clearAll();
-  }
-
-  if (chrome.storage && chrome.storage.sync) {
-    chrome.storage.sync.get({networkId: ''}, (data) => {
-      networkId = data.networkId;
-    });
   }
 
   displayBlock(`<div class="navigation">Navigate to <span>${url}</span></div>`);
