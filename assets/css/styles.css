@@ -8,6 +8,11 @@ h1 {
   margin: 0.5em 0;
 }
 
+#adunitFilter span {
+  font-size: 0.9em;
+  color: #505050;
+}
+
 #content {
   width: 100%;
   height: 90%;

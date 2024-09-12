@@ -1,6 +1,10 @@
+import { debounce } from "./utils.js";
+
 const contentEl = document.getElementById('content');
 const optionsEl = document.getElementById('options');
 const clearEl = document.getElementById('clear');
+const adunitFilterEl = document.querySelector('#adunitFilter input');
+const adunitFilterStatusEl = document.querySelector('#adunitFilter span');
 
 let networkId = '';
 let preserveLog = false;
@@ -52,8 +56,6 @@ if (chrome.storage && chrome.storage.local) {
   });
 }
 
-
-
 const handleClearButton = function(e) {
   e.preventDefault();
   clearAll();
@@ -68,8 +70,38 @@ const initDisplay = function() {
 
   clearEl.addEventListener('click', handleClearButton);
 
+  configureListenerForFilterAdunits();
+
   configureListenerForShortenedValues();
 };
+
+const configureListenerForFilterAdunits = function () {
+  const handleInput = (e) => filterAdunits(e.target.value);
+  adunitFilterEl.addEventListener('input', debounce(handleInput, 300));
+};
+
+const filterAdunits = function(filter) {
+  document.querySelectorAll('.slot').forEach((slot) => {
+    const slotNameEl = slot.querySelector('h3');
+
+    const hide = filter && !slotNameEl.textContent.includes(filter);
+    slotNameEl.parentElement.classList.toggle('hide', hide);
+  });
+
+  document.querySelectorAll('.block-ads').forEach((block) => {
+    const hide = [...block.querySelectorAll('.slot:not(.hide)')].length === 0;
+    block.classList.toggle('hide', hide);
+  });
+
+  const hiddenBlocks = document.querySelectorAll('.block-ads.hide');
+  const hiddenSlots = document.querySelectorAll('.slot.hide');
+  if (hiddenBlocks.length || hiddenSlots.length) {
+    const message = `Hidden ${hiddenBlocks.length} requests & ${hiddenSlots.length} slots`;
+    adunitFilterStatusEl.textContent = message;
+  } else {
+    adunitFilterStatusEl.textContent = '';
+  }
+}
 
 const configureListenerForShortenedValues = function() {
   document.addEventListener('click', (e) => {
@@ -106,6 +138,8 @@ const displayAdsRequest = function(data) {
 </div>
   `;
   displayBlock(html);
+
+  if (adunitFilterEl.value) filterAdunits(adunitFilterEl.value);
 };
 
 const getSlotHtml = function(data) {
