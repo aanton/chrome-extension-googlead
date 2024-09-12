@@ -6,7 +6,7 @@ const statusElement = document.getElementById('status');
 const saveOptions = function(e) {
   e.preventDefault();
 
-  chrome.storage.sync.set(
+  chrome.storage.local.set(
     {
       networkId: networkIdElement.value,
     },
@@ -23,12 +23,10 @@ const saveOptions = function(e) {
 }
 
 const restoreOptions = function(e) {
-  chrome.storage.sync.get(
-    {
-      networkId: '',
-    },
+  chrome.storage.local.get(
+    ['networkId'],
     (data) => {
-      networkIdElement.value = data.networkId;
+      networkIdElement.value = data.networkId ?? '';
     }
   );
 }
