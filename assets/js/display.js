@@ -50,7 +50,6 @@ const initDisplay = function() {
 
 const configureListenerForShortenedValues = function() {
   document.addEventListener('click', (e) => {
-    console.log(e.target);
     const element = e.target;
 
     if (!element.classList.contains('shortened')) return;
