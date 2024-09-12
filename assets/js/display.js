@@ -1,16 +1,21 @@
 let networkId = '';
 
 if (chrome.storage && chrome.storage.local) {
-  const options = (await chrome.storage.local.get(['networkId']));
+  const options = await chrome.storage.local.get(['networkId', 'hideGdprConsent']);
   console.log('Initial options:', options);
 
   networkId = options.networkId ?? '';
+  document.body.classList.toggle('hide-gdpr-consent', options.hideGdprConsent ?? true);
 
   chrome.storage.onChanged.addListener((changes) => {
     console.log('Update options', changes)
 
     if (changes.networkId?.newValue !== undefined) {
       networkId = changes.networkId.newValue;
+    }
+
+    if (changes.hideGdprConsent?.newValue !== undefined) {
+      document.body.classList.toggle('hide-gdpr-consent', changes.hideGdprConsent.newValue);
     }
   });
 }

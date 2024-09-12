@@ -9,6 +9,7 @@ const saveOptions = function(e) {
   chrome.storage.local.set(
     {
       networkId: optionsFormElement.networkId.value,
+      hideGdprConsent: optionsFormElement.hideGdprConsent.checked,
     },
     () => {
       statusElement.textContent = 'Options saved';
@@ -24,9 +25,10 @@ const saveOptions = function(e) {
 
 const restoreOptions = function(e) {
   chrome.storage.local.get(
-    ['networkId'],
+    ['networkId', 'hideGdprConsent'],
     (data) => {
       optionsFormElement.networkId.value = data.networkId ?? '';
+      optionsFormElement.hideGdprConsent.checked = data.hideGdprConsent ?? true;
     }
   );
 }
