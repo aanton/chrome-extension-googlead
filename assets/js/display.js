@@ -1,11 +1,12 @@
 let networkId = '';
 
 if (chrome.storage && chrome.storage.local) {
-  const options = await chrome.storage.local.get(['networkId', 'hideGdprConsent', 'hideGlobalTargetings']);
+  const options = await chrome.storage.local.get(['networkId', 'hideGdprConsent', 'hidePpid', 'hideGlobalTargetings']);
   console.log('Initial options:', options);
 
   networkId = options.networkId ?? '';
   document.body.classList.toggle('hide-gdpr-consent', options.hideGdprConsent ?? true);
+  document.body.classList.toggle('hide-ppid', options.hidePpid ?? true);
   document.body.classList.toggle('hide-global-targetings', options.hideGlobalTargetings ?? false);
 
   chrome.storage.onChanged.addListener((changes) => {
@@ -17,6 +18,10 @@ if (chrome.storage && chrome.storage.local) {
 
     if (changes.hideGdprConsent?.newValue !== undefined) {
       document.body.classList.toggle('hide-gdpr-consent', changes.hideGdprConsent.newValue);
+    }
+
+    if (changes.hidePpid?.newValue !== undefined) {
+      document.body.classList.toggle('hide-ppid', changes.hidePpid.newValue);
     }
 
     if (changes.hideGlobalTargetings?.newValue !== undefined) {
@@ -84,6 +89,7 @@ const displayAdsRequest = function(data) {
 <div class="block-ads multiple-ads ${isAnonymous ? 'anonymous' : ''} ${isUnfill ? 'unfill' : ''}">
   <h2>Request for ${data.length} ${label} (${datetime})</h2>
   ${getGdprHtml(data[0])}
+  <div class="ppid">&bullet; ppid: ${data[0].ppid}</div>
   ${data[0].globalTargetings ? `<div class="global-targetings">&bullet; globalTargetings: ${formatParameters(data[0].globalTargetings)}</div>` : ''}
   ${data.map(_data => getSlotHtml(_data)).join('')}
 </div>
@@ -111,7 +117,6 @@ const getGdprHtml = function(data) {
 ${data.isNPA ? '&bullet; NPA' : ''}
 &bullet; gdpr: ${data.gdpr}<br />
 &bullet; gdpr_consent: ${formatLongValue(data.gdprConsent)}<br />
-&bullet; ppid: ${data.ppid}
 </div>
   `;
 }
