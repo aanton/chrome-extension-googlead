@@ -79,6 +79,10 @@ h1 {
   display: none;
 }
 
+.hide-ppid .ppid {
+  display: none;
+}
+
 .hide-global-targetings .global-targetings {
   display: none;
 }

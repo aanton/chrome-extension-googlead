@@ -10,6 +10,7 @@ const saveOptions = function(e) {
     {
       networkId: optionsFormElement.networkId.value,
       hideGdprConsent: optionsFormElement.hideGdprConsent.checked,
+      hidePpid: optionsFormElement.hidePpid.checked,
       hideGlobalTargetings: optionsFormElement.hideGlobalTargetings.checked,
     },
     () => {
@@ -26,10 +27,11 @@ const saveOptions = function(e) {
 
 const restoreOptions = function(e) {
   chrome.storage.local.get(
-    ['networkId', 'hideGdprConsent', 'hideGlobalTargetings'],
+    ['networkId', 'hideGdprConsent', 'hidePpid', 'hideGlobalTargetings'],
     (data) => {
       optionsFormElement.networkId.value = data.networkId ?? '';
       optionsFormElement.hideGdprConsent.checked = data.hideGdprConsent ?? true;
+      optionsFormElement.hidePpid.checked = data.hidePpid ?? true;
       optionsFormElement.hideGlobalTargetings.checked = data.hideGlobalTargetings ?? false;
     }
   );
