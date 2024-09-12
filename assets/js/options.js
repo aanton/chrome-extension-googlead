@@ -1,6 +1,6 @@
 // This script is used in the Options page
 
-const networkIdElement = document.getElementById('networkId');
+const optionsFormElement = document.getElementById('options-form');
 const statusElement = document.getElementById('status');
 
 const saveOptions = function(e) {
@@ -8,7 +8,7 @@ const saveOptions = function(e) {
 
   chrome.storage.local.set(
     {
-      networkId: networkIdElement.value,
+      networkId: optionsFormElement.networkId.value,
     },
     () => {
       statusElement.textContent = 'Options saved';
@@ -26,7 +26,7 @@ const restoreOptions = function(e) {
   chrome.storage.local.get(
     ['networkId'],
     (data) => {
-      networkIdElement.value = data.networkId ?? '';
+      optionsFormElement.networkId.value = data.networkId ?? '';
     }
   );
 }
