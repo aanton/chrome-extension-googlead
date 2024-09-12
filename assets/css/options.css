@@ -17,6 +17,10 @@ form {
   gap: 1em;
 }
 
+label {
+  display: block;
+}
+
 .info {
   font-size: 0.9em;
   color: #505050;
