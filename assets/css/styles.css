@@ -78,3 +78,7 @@ h1 {
 .hide-gdpr-consent .gdpr {
   display: none;
 }
+
+.hide-global-targetings .global-targetings {
+  display: none;
+}

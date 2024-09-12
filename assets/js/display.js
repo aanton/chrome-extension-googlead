@@ -1,11 +1,12 @@
 let networkId = '';
 
 if (chrome.storage && chrome.storage.local) {
-  const options = await chrome.storage.local.get(['networkId', 'hideGdprConsent']);
+  const options = await chrome.storage.local.get(['networkId', 'hideGdprConsent', 'hideGlobalTargetings']);
   console.log('Initial options:', options);
 
   networkId = options.networkId ?? '';
   document.body.classList.toggle('hide-gdpr-consent', options.hideGdprConsent ?? true);
+  document.body.classList.toggle('hide-global-targetings', options.hideGlobalTargetings ?? false);
 
   chrome.storage.onChanged.addListener((changes) => {
     console.log('Update options', changes)
@@ -16,6 +17,10 @@ if (chrome.storage && chrome.storage.local) {
 
     if (changes.hideGdprConsent?.newValue !== undefined) {
       document.body.classList.toggle('hide-gdpr-consent', changes.hideGdprConsent.newValue);
+    }
+
+    if (changes.hideGlobalTargetings?.newValue !== undefined) {
+      document.body.classList.toggle('hide-global-targetings', changes.hideGlobalTargetings.newValue);
     }
   });
 }
@@ -79,7 +84,7 @@ const displayAdsRequest = function(data) {
 <div class="block-ads multiple-ads ${isAnonymous ? 'anonymous' : ''} ${isUnfill ? 'unfill' : ''}">
   <h2>Request for ${data.length} ${label} (${datetime})</h2>
   ${getGdprHtml(data[0])}
-  ${data[0].globalTargetings ? `<div>&bullet; globalTargetings: ${formatParameters(data[0].globalTargetings)}</div>` : ''}
+  ${data[0].globalTargetings ? `<div class="global-targetings">&bullet; globalTargetings: ${formatParameters(data[0].globalTargetings)}</div>` : ''}
   ${data.map(_data => getSlotHtml(_data)).join('')}
 </div>
   `;
