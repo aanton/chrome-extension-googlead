@@ -4,7 +4,7 @@ import { isAdsRequest, analyzeAdsRequest, isBasicAdRequest, analyzeBasicAdReques
 const init = function() {
   initDisplay();
 
-  // https://developer.chrome.com/extensions/devtools_network
+  // https://developer.chrome.com/docs/extensions/reference/api/devtools/network
   chrome.devtools.network.onRequestFinished.addListener(handleRequest);
   chrome.devtools.network.onNavigated.addListener(handleNavigation);
 };
@@ -13,7 +13,7 @@ const handleNavigation = function(url) {
   displayNavigation(url);
 };
 
-const handleRequest = function(request) {
+const handleRequest = async function(request) {
   if (!request.request.url.match(/ads\?/)) {
     return;
   }
@@ -23,7 +23,7 @@ const handleRequest = function(request) {
   }
 
   if (isAdsRequest(request)) {
-    displayAdsRequest(analyzeAdsRequest(request));
+    displayAdsRequest(await analyzeAdsRequest(request));
     return;
   }
 
