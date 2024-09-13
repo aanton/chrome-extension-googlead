@@ -39,6 +39,15 @@ h1 {
   background-color: hsl(200, 75%, 85%);
 }
 
+.block-ads h3 span.advertiser {
+  font-size: 0.8em;
+  font-weight: normal;
+  text-transform: uppercase;
+  background-color: hsl(60, 80%, 50%);
+  padding: 0.1em 0.3em;
+  border-radius: 0.25em;
+}
+
 .block-ads .slot {
   margin-bottom: 0.5em;
 }

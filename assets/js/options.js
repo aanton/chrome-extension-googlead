@@ -6,11 +6,17 @@ const statusElement = document.getElementById('status');
 const saveOptions = function(e) {
   e.preventDefault();
 
+  // @todo Validate JSON
+  if (!optionsFormElement.advertisersJson.value) {
+    optionsFormElement.advertisersJson.value = '{}';
+  }
+
   chrome.storage.local.set(
     {
       networkId: optionsFormElement.networkId.value,
-      showOrder: optionsFormElement.showOrder.checked,
       preserveLog: optionsFormElement.preserveLog.checked,
+      showOrder: optionsFormElement.showOrder.checked,
+      advertisersJson: optionsFormElement.advertisersJson.value,
       hideGdprConsent: optionsFormElement.hideGdprConsent.checked,
       hidePpid: optionsFormElement.hidePpid.checked,
       hideGlobalTargetings: optionsFormElement.hideGlobalTargetings.checked,
@@ -34,8 +40,9 @@ const restoreOptions = function(e) {
     null,
     (data) => {
       optionsFormElement.networkId.value = data.networkId ?? '';
-      optionsFormElement.showOrder.checked = data.showOrder ?? false;
       optionsFormElement.preserveLog.checked = data.preserveLog ?? false;
+      optionsFormElement.showOrder.checked = data.showOrder ?? false;
+      optionsFormElement.advertisersJson.value = data.advertisersJson ?? '{}';
       optionsFormElement.hideGdprConsent.checked = data.hideGdprConsent ?? true;
       optionsFormElement.hidePpid.checked = data.hidePpid ?? true;
       optionsFormElement.hideGlobalTargetings.checked = data.hideGlobalTargetings ?? false;
