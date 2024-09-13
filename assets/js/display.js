@@ -1,10 +1,17 @@
+const contentEl = document.getElementById('content');
+const optionsEl = document.getElementById('options');
+const clearEl = document.getElementById('clear');
+
 let networkId = '';
+let preserveLog = false;
 
 if (chrome.storage && chrome.storage.local) {
   const options = await chrome.storage.local.get(null);
   console.log('Initial options:', options);
 
   networkId = options.networkId ?? '';
+  preserveLog = options.preserveLog ?? false;
+  clearEl.classList.toggle('hide', !preserveLog);
   document.body.classList.toggle('hide-gdpr-consent', options.hideGdprConsent ?? true);
   document.body.classList.toggle('hide-ppid', options.hidePpid ?? true);
   document.body.classList.toggle('hide-global-targetings', options.hideGlobalTargetings ?? false);
@@ -16,6 +23,11 @@ if (chrome.storage && chrome.storage.local) {
 
     if (changes.networkId?.newValue !== undefined) {
       networkId = changes.networkId.newValue;
+    }
+
+    if (changes.preserveLog?.newValue !== undefined) {
+      preserveLog = changes.preserveLog.newValue;
+      clearEl.classList.toggle('hide', !preserveLog);
     }
 
     if (changes.hideGdprConsent?.newValue !== undefined) {
@@ -40,15 +52,7 @@ if (chrome.storage && chrome.storage.local) {
   });
 }
 
-const autoclear = true;
 
-const contentEl = document.getElementById('content');
-const optionsEl = document.getElementById('options');
-const clearEl = document.getElementById('clear');
-
-const removeClearButton = function() {
-  clearEl.style = 'display:none';
-};
 
 const handleClearButton = function(e) {
   e.preventDefault();
@@ -62,7 +66,6 @@ const clearAll = function() {
 const initDisplay = function() {
   optionsEl.addEventListener('click', () => chrome.runtime.openOptionsPage());
 
-  if (autoclear) removeClearButton();
   clearEl.addEventListener('click', handleClearButton);
 
   configureListenerForShortenedValues();
@@ -81,9 +84,7 @@ const configureListenerForShortenedValues = function() {
 }
 
 const displayNavigation = function(url) {
-  if (autoclear) {
-    clearAll();
-  }
+  if (!preserveLog) clearAll();
 
   displayBlock(`<div class="navigation">Navigate to <span>${url}</span></div>`);
 };
