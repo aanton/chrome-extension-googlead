@@ -10,7 +10,7 @@ const fetchRequest = async function(url) {
   const json = await response.json();
 
   if (isAdsRequest(json)) {
-    displayAdsRequest(analyzeAdsRequest(json));
+    displayAdsRequest(await analyzeAdsRequest(json));
     return;
   }
 

@@ -4,12 +4,14 @@ export const isAdsRequest = function (request) {
   return !!readQueryParameter(request.request.queryString, 'iu_parts');
 };
 
-export const analyzeAdsRequest = function (request) {
+export const analyzeAdsRequest = async function (request) {
+  const parsedContent = await getParsedContent(request);
+
   const adUnitsCodes = readQueryParameter(request.request.queryString, 'enc_prev_ius').split(',');
   const adUnitsRaw = readQueryParameter(request.request.queryString, 'iu_parts').split(',');
 
   const adUnits = adUnitsCodes.map((code) => {
-    return code
+    return '/' + code
       .split('/')
       .filter(Boolean)
       .map((id) => adUnitsRaw[id])
@@ -44,6 +46,7 @@ export const analyzeAdsRequest = function (request) {
       ppid,
       creativeId: creativeId[index],
       lineitemId: lineitemId[index],
+      orderId: getOrderId(parsedContent, adUnit),
       isUnfill: lineitemId[index] === '-2',
       gdpr,
       gdprConsent,
@@ -80,8 +83,28 @@ export const analyzeBasicAdRequest = function (request) {
     ppid,
     creativeId,
     lineitemId,
+    orderId: null,
     isUnfill: lineitemId === '-2',
     gdpr,
     gdprConsent,
   };
+};
+
+const getParsedContent = async function (request) {
+  if (!request.getContent) return Promise.resolve({});
+
+  return new Promise((resolve) => {
+    request.getContent((content) => {
+      const jsonObjects = content
+        .split('\n')
+        .filter((line) => line.startsWith('{') && line.endsWith('}'))
+        .map((line) => JSON.parse(line));
+
+      resolve(jsonObjects.reduce((acc, obj) => Object.assign(acc, obj), {}));
+    });
+  });
+};
+
+const getOrderId = function (data, adUnit) {
+  return data[adUnit] ? data[adUnit][17] : null;
 };

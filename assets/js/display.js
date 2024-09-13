@@ -149,8 +149,9 @@ const getSlotHtml = function(data) {
   <div class="slots-sizes">&bullet; sizes: ${data.sizes}</div>
   ${data.slotTargetings ? `<div class="slots-targetings">&bullet; slotTargetings: ${formatParameters(data.slotTargetings)}</div>` : ''}
   <div>
-    &bullet; creativeId: ${formatCreativeId(data.creativeId)}
-    &bullet; lineitemId: ${formatLineItemId(data.lineitemId)}
+    &bullet; creative: ${formatCreativeId(data.creativeId)}
+    &bullet; lineitem: ${formatLineItemId(data.lineitemId)}
+    ${data.orderId ? `&bullet; order: ${formatOrderId(data.orderId)}` : ''}
   </div>
 </div>
   `;
@@ -202,6 +203,14 @@ const formatCreativeId = function(value) {
   if (value === '-1' || value === '-2') return value;
 
   const url = `https://admanager.google.com/${networkId}#creatives/creative/detail/creative_id=${value}`;
+  return `<a href="${url}" target="_blank">${value}</a>`
+}
+
+const formatOrderId = function(value) {
+  if (!networkId) return value;
+  if (!value) return value;
+
+  const url = `https://admanager.google.com/${networkId}#delivery/order/order_overview/order_id=${value}`;
   return `<a href="${url}" target="_blank">${value}</a>`
 }
 
