@@ -86,3 +86,7 @@ h1 {
 .hide-global-targetings .global-targetings {
   display: none;
 }
+
+.hide-slots-targetings .slots-targetings {
+  display: none;
+}
