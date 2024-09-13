@@ -142,9 +142,11 @@ const getParsedContent = async function (request) {
 };
 
 const getOrderId = function (data, adUnit) {
+  adUnit = adUnit.replace(/(^\/\d+):\d+/, '$1');
   return data[adUnit] && Array.isArray(data[adUnit][17]) ? data[adUnit][17][0] : null;
 };
 
 const getAdvertiserId = function (data, adUnit) {
+  adUnit = adUnit.replace(/(^\/\d+):\d+/, '$1');
   return data[adUnit] && Array.isArray(data[adUnit][16]) ? data[adUnit][16][0] : null;
 };
