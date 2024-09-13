@@ -14,14 +14,24 @@
       </label>
 
       <label>
-        Show order: <input name="showOrder" type="checkbox" />
-        <div class="info">WARNING! Getting the order takes more time, use it only if you need it</div>
-      </label>
-
-      <label>
         Preserve log: <input name="preserveLog" type="checkbox" />
         <div class="info">Keeps requests & adunits on page navigation</div>
       </label>
+
+      <fieldset>
+        <legend>Orders & advertisers information</legend>
+
+        <label>
+          Show orders & advertisers: <input name="showOrder" type="checkbox" />
+          <div class="info">WARNING! It takes more time to get them, use it only if you need it</div>
+        </label>
+
+        <label>
+          Advertisers: <input name="advertisersJson" type="text" />
+          <div class="info">Advertisers lists (in JSON format) to detect their campaigns</div>
+        </label>
+
+      </fieldset>
 
       <fieldset>
         <legend>Hide information</legend>

@@ -19,3 +19,15 @@ export const debounce = function (callback, wait) {
     timeout = setTimeout(() => callback(...args), wait);
   };
 };
+
+export const parseJson = function (value) {
+  if (!value) return {}
+
+  try {
+    return JSON.parse(value);
+  } catch (e) {
+    console.error('Invalid JSON', value);
+  }
+
+  return {};
+}

@@ -82,10 +82,10 @@ const configureListenerForFilterAdunits = function () {
 
 const filterAdunits = function(filter) {
   document.querySelectorAll('.slot').forEach((slot) => {
-    const slotNameEl = slot.querySelector('h3');
+    const slotNameEl = slot.querySelector('h3 span.adunit');
 
     const hide = filter && !slotNameEl.textContent.includes(filter);
-    slotNameEl.parentElement.classList.toggle('hide', hide);
+    slotNameEl.closest('.slot').classList.toggle('hide', hide);
   });
 
   document.querySelectorAll('.block-ads').forEach((block) => {
@@ -143,9 +143,17 @@ const displayAdsRequest = function(data) {
 };
 
 const getSlotHtml = function(data) {
+  let winnerHtml = '';
+  if (data.advertiserWinner) {
+    winnerHtml = `<span class="advertiser">${data.advertiserWinner}</span>`;
+  }
+
   return `
 <div class="slot ${data.isUnfill ? 'unfill' : ''}">
-  <h3>${data.adUnit}</h3>
+  <h3>
+    <span class="adunit">${data.adUnit}</span>
+    ${winnerHtml}
+  </h3>
   <div class="slots-sizes">&bullet; sizes: ${data.sizes}</div>
   ${data.slotTargetings ? `<div class="slots-targetings">&bullet; slotTargetings: ${formatParameters(data.slotTargetings)}</div>` : ''}
   <div>

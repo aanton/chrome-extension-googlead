@@ -1,14 +1,21 @@
-import { readQueryParameter, readHeader } from './utils.js';
+import { readQueryParameter, readHeader, parseJson } from './utils.js';
 
 let showOrder = false;
+let advertisersJson = {};
 
 if (chrome.storage && chrome.storage.local) {
   const options = await chrome.storage.local.get(null);
+
   showOrder = options.showOrder ?? false;
+  advertisersJson = parseJson(options.advertisersJson);
 
   chrome.storage.onChanged.addListener((changes) => {
     if (changes.showOrder?.newValue !== undefined) {
       showOrder = changes.showOrder.newValue;
+    }
+
+    if (changes.advertisersJson?.newValue !== undefined) {
+      advertisersJson = parseJson(changes.advertisersJson.newValue);
     }
   });
 }
@@ -49,6 +56,13 @@ export const analyzeAdsRequest = async function (request) {
   const ppid = readQueryParameter(request.request.queryString, 'ppid') || undefined;
 
   return adUnits.map((adUnit, index) => {
+    const orderId = getOrderId(parsedContent, adUnit);
+    const advertiserId = getAdvertiserId(parsedContent, adUnit);
+
+    const advertiserWinner = advertiserId && advertisersJson[advertiserId]
+      ? advertisersJson[advertiserId]
+      : null;
+
     return {
       adUnit,
       sizes: sizes[index],
@@ -59,7 +73,9 @@ export const analyzeAdsRequest = async function (request) {
       ppid,
       creativeId: creativeId[index],
       lineitemId: lineitemId[index],
-      orderId: getOrderId(parsedContent, adUnit),
+      orderId,
+      advertiserId,
+      advertiserWinner,
       isUnfill: lineitemId[index] === '-2',
       gdpr,
       gdprConsent,
@@ -80,6 +96,10 @@ export const analyzeBasicAdRequest = function (request) {
   const creativeId = readHeader(request.response.headers, 'google-creative-id');
   const lineitemId = readHeader(request.response.headers, 'google-lineitem-id');
 
+  const orderId = null;
+  const advertiserId = null;
+  const advertiserWinner = null;
+
   const gdpr = readQueryParameter(request.request.queryString, 'gdpr') || undefined;
   const gdprConsent = readQueryParameter(request.request.queryString, 'gdpr_consent') || undefined;
 
@@ -96,7 +116,9 @@ export const analyzeBasicAdRequest = function (request) {
     ppid,
     creativeId,
     lineitemId,
-    orderId: null,
+    orderId,
+    advertiserId,
+    advertiserWinner,
     isUnfill: lineitemId === '-2',
     gdpr,
     gdprConsent,
@@ -120,5 +142,9 @@ const getParsedContent = async function (request) {
 };
 
 const getOrderId = function (data, adUnit) {
-  return data[adUnit] ? data[adUnit][17] : null;
+  return data[adUnit] && Array.isArray(data[adUnit][17]) ? data[adUnit][17][0] : null;
+};
+
+const getAdvertiserId = function (data, adUnit) {
+  return data[adUnit] && Array.isArray(data[adUnit][16]) ? data[adUnit][16][0] : null;
 };
