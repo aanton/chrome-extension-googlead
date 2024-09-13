@@ -9,6 +9,7 @@ if (chrome.storage && chrome.storage.local) {
   document.body.classList.toggle('hide-ppid', options.hidePpid ?? true);
   document.body.classList.toggle('hide-global-targetings', options.hideGlobalTargetings ?? false);
   document.body.classList.toggle('hide-slots-targetings', options.hideSlotsTargetings ?? false);
+  document.body.classList.toggle('hide-slots-sizes', options.hideSlotsSizes ?? false);
 
   chrome.storage.onChanged.addListener((changes) => {
     console.log('Update options', changes)
@@ -31,6 +32,10 @@ if (chrome.storage && chrome.storage.local) {
 
     if (changes.hideSlotsTargetings?.newValue !== undefined) {
       document.body.classList.toggle('hide-slots-targetings', changes.hideSlotsTargetings.newValue);
+    }
+
+    if (changes.hideSlotsSizes?.newValue !== undefined) {
+      document.body.classList.toggle('hide-slots-sizes', changes.hideSlotsSizes.newValue);
     }
   });
 }
@@ -106,7 +111,7 @@ const getSlotHtml = function(data) {
   return `
 <div class="slot ${data.isUnfill ? 'unfill' : ''}">
   <h3>${data.adUnit}</h3>
-  <div>&bullet; sizes: ${data.sizes}</div>
+  <div class="slots-sizes">&bullet; sizes: ${data.sizes}</div>
   ${data.slotTargetings ? `<div class="slots-targetings">&bullet; slotTargetings: ${formatParameters(data.slotTargetings)}</div>` : ''}
   <div>
     &bullet; creativeId: ${formatCreativeId(data.creativeId)}

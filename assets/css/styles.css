@@ -90,3 +90,7 @@ h1 {
 .hide-slots-targetings .slots-targetings {
   display: none;
 }
+
+.hide-slots-sizes .slots-sizes {
+  display: none;
+}
