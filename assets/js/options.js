@@ -12,6 +12,7 @@ const saveOptions = function(e) {
       hideGdprConsent: optionsFormElement.hideGdprConsent.checked,
       hidePpid: optionsFormElement.hidePpid.checked,
       hideGlobalTargetings: optionsFormElement.hideGlobalTargetings.checked,
+      hideSlotsTargetings: optionsFormElement.hideSlotsTargetings.checked,
     },
     () => {
       statusElement.textContent = 'Options saved';
@@ -33,6 +34,7 @@ const restoreOptions = function(e) {
       optionsFormElement.hideGdprConsent.checked = data.hideGdprConsent ?? true;
       optionsFormElement.hidePpid.checked = data.hidePpid ?? true;
       optionsFormElement.hideGlobalTargetings.checked = data.hideGlobalTargetings ?? false;
+      optionsFormElement.hideSlotsTargetings.checked = data.hideSlotsTargetings ?? false
     }
   );
 }

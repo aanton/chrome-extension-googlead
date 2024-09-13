@@ -8,6 +8,7 @@ if (chrome.storage && chrome.storage.local) {
   document.body.classList.toggle('hide-gdpr-consent', options.hideGdprConsent ?? true);
   document.body.classList.toggle('hide-ppid', options.hidePpid ?? true);
   document.body.classList.toggle('hide-global-targetings', options.hideGlobalTargetings ?? false);
+  document.body.classList.toggle('hide-slots-targetings', options.hideSlotsTargetings ?? false);
 
   chrome.storage.onChanged.addListener((changes) => {
     console.log('Update options', changes)
@@ -26,6 +27,10 @@ if (chrome.storage && chrome.storage.local) {
 
     if (changes.hideGlobalTargetings?.newValue !== undefined) {
       document.body.classList.toggle('hide-global-targetings', changes.hideGlobalTargetings.newValue);
+    }
+
+    if (changes.hideSlotsTargetings?.newValue !== undefined) {
+      document.body.classList.toggle('hide-slots-targetings', changes.hideSlotsTargetings.newValue);
     }
   });
 }
@@ -102,7 +107,7 @@ const getSlotHtml = function(data) {
 <div class="slot ${data.isUnfill ? 'unfill' : ''}">
   <h3>${data.adUnit}</h3>
   <div>&bullet; sizes: ${data.sizes}</div>
-  ${data.slotTargetings ? `<div>&bullet; slotTargetings: ${formatParameters(data.slotTargetings)}</div>` : ''}
+  ${data.slotTargetings ? `<div class="slots-targetings">&bullet; slotTargetings: ${formatParameters(data.slotTargetings)}</div>` : ''}
   <div>
     &bullet; creativeId: ${formatCreativeId(data.creativeId)}
     &bullet; lineitemId: ${formatLineItemId(data.lineitemId)}
