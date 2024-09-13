@@ -4,6 +4,7 @@ body {
   flex-direction: column;
   align-items: flex-start;
   gap: 1em;
+  max-width: 800px;
 }
 
 h1 {
@@ -15,10 +16,19 @@ form {
   display: flex;
   flex-direction: column;
   gap: 1em;
+  width: 100%;
 }
 
 label {
   display: block;
+}
+
+input[type="text"]{
+  font-size: 1em;
+}
+
+input[type="text"].input-long {
+  min-width: 60%;
 }
 
 .info {
