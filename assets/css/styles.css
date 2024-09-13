@@ -75,6 +75,10 @@ h1 {
   cursor: pointer;
 }
 
+.hide {
+  display: none;
+}
+
 .hide-gdpr-consent .gdpr {
   display: none;
 }
