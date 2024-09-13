@@ -1,7 +1,7 @@
 let networkId = '';
 
 if (chrome.storage && chrome.storage.local) {
-  const options = await chrome.storage.local.get(['networkId', 'hideGdprConsent', 'hidePpid', 'hideGlobalTargetings']);
+  const options = await chrome.storage.local.get(null);
   console.log('Initial options:', options);
 
   networkId = options.networkId ?? '';

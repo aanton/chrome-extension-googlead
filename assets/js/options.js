@@ -27,7 +27,7 @@ const saveOptions = function(e) {
 
 const restoreOptions = function(e) {
   chrome.storage.local.get(
-    ['networkId', 'hideGdprConsent', 'hidePpid', 'hideGlobalTargetings'],
+    null,
     (data) => {
       optionsFormElement.networkId.value = data.networkId ?? '';
       optionsFormElement.hideGdprConsent.checked = data.hideGdprConsent ?? true;
