@@ -143,16 +143,11 @@ const displayAdsRequest = function(data) {
 };
 
 const getSlotHtml = function(data) {
-  let winnerHtml = '';
-  if (data.advertiserWinner) {
-    winnerHtml = `<span class="advertiser">${data.advertiserWinner}</span>`;
-  }
-
   return `
 <div class="slot ${data.isUnfill ? 'unfill' : ''}">
   <h3>
     <span class="adunit">${data.adUnit}</span>
-    ${winnerHtml}
+    ${getWinnerHtml(data)}
   </h3>
   <div class="slots-sizes">&bullet; sizes: ${data.sizes}</div>
   ${data.slotTargetings ? `<div class="slots-targetings">&bullet; slotTargetings: ${formatParameters(data.slotTargetings)}</div>` : ''}
@@ -163,6 +158,28 @@ const getSlotHtml = function(data) {
   </div>
 </div>
   `;
+};
+
+const getWinnerHtml = function (data) {
+  if (!data.advertiserWinner) return '';
+
+  return `<span class="advertiser">${data.advertiserWinner} ${getWinnerPrebidHtml(data)}</span>`;
+};
+
+const getWinnerPrebidHtml = function (data) {
+  // @todo Configure the Prebid advertisers in the settings
+  if (!['prebid', 'criteo'].includes(data.advertiserWinner)) return '';
+
+  const targetings = new URLSearchParams(data.slotTargetings);
+  const bidder = targetings.get('hb_bidder');
+  const price = targetings.get('hb_pb');
+  if (!bidder || !price) return '';
+
+  if (bidder === data.advertiserWinner) {
+    return `(${price})`;
+  }
+
+  return `(${bidder}: ${price})`;
 };
 
 const getGdprHtml = function(data) {
