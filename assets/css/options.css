@@ -31,6 +31,12 @@ input[type="text"].input-long {
   min-width: 60%;
 }
 
+textarea {
+  font-size: 1em;
+  min-height: 60px;
+  min-width: 80%;
+}
+
 .info {
   font-size: 0.9em;
   color: #505050;
