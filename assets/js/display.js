@@ -163,13 +163,15 @@ const getSlotHtml = function(data) {
 const getWinnerHtml = function (data) {
   if (!data.advertiserWinner) return '';
 
-  return `<span class="advertiser">${data.advertiserWinner} ${getWinnerPrebidHtml(data)}</span>`;
+  let bidInfo = '';
+  if (data.advertiserWinner === 'prebid') {
+    bidInfo = getPrebidWinnerHtml(data);
+  }
+
+  return `<span class="advertiser">${data.advertiserWinner} ${bidInfo}</span>`;
 };
 
-const getWinnerPrebidHtml = function (data) {
-  // @todo Configure the Prebid advertisers in the settings
-  if (!['prebid', 'criteo'].includes(data.advertiserWinner)) return '';
-
+const getPrebidWinnerHtml = function (data) {
   const targetings = new URLSearchParams(data.slotTargetings);
   const bidder = targetings.get('hb_bidder');
   const price = targetings.get('hb_pb');
