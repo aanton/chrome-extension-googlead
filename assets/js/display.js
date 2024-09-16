@@ -1,4 +1,4 @@
-import { debounce } from "./utils.js";
+import { debounce, parseJson } from "./utils.js";
 
 const contentEl = document.getElementById('content');
 const optionsEl = document.getElementById('options');
@@ -8,6 +8,7 @@ const adunitFilterStatusEl = document.querySelector('#adunitFilter span');
 
 let networkId = '';
 let preserveLog = false;
+let amazonBidsJson = {};
 
 if (chrome.storage && chrome.storage.local) {
   const options = await chrome.storage.local.get(null);
@@ -16,6 +17,7 @@ if (chrome.storage && chrome.storage.local) {
   networkId = options.networkId ?? '';
   preserveLog = options.preserveLog ?? false;
   clearEl.classList.toggle('hide', !preserveLog);
+  amazonBidsJson = parseJson(options.amazonBidsJson);
   document.body.classList.toggle('hide-gdpr-consent', options.hideGdprConsent ?? true);
   document.body.classList.toggle('hide-ppid', options.hidePpid ?? true);
   document.body.classList.toggle('hide-global-targetings', options.hideGlobalTargetings ?? false);
@@ -32,6 +34,10 @@ if (chrome.storage && chrome.storage.local) {
     if (changes.preserveLog?.newValue !== undefined) {
       preserveLog = changes.preserveLog.newValue;
       clearEl.classList.toggle('hide', !preserveLog);
+    }
+
+    if (changes.amazonBidsJson?.newValue !== undefined) {
+      amazonBidsJson = parseJson(changes.amazonBidsJson.newValue);
     }
 
     if (changes.hideGdprConsent?.newValue !== undefined) {
@@ -164,12 +170,23 @@ const getWinnerHtml = function (data) {
   if (!data.advertiserWinner) return '';
 
   let bidInfo = '';
-  if (data.advertiserWinner === 'prebid') {
+  if (data.advertiserWinner === 'amazon') {
+    bidInfo = getAmazonWinnerHtml(data);
+  } else if (data.advertiserWinner === 'prebid') {
     bidInfo = getPrebidWinnerHtml(data);
   }
 
   return `<span class="advertiser">${data.advertiserWinner} ${bidInfo}</span>`;
 };
+
+const getAmazonWinnerHtml = function (data) {
+  const targetings = new URLSearchParams(data.slotTargetings);
+  const bid = targetings.get('amznbid');
+  const price = amazonBidsJson[bid];
+  if (!price) return '';
+
+  return `(${price})`;
+}
 
 const getPrebidWinnerHtml = function (data) {
   const targetings = new URLSearchParams(data.slotTargetings);

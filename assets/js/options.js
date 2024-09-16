@@ -17,6 +17,7 @@ const saveOptions = function(e) {
       preserveLog: optionsFormElement.preserveLog.checked,
       showOrder: optionsFormElement.showOrder.checked,
       advertisersJson: optionsFormElement.advertisersJson.value,
+      amazonBidsJson: optionsFormElement.amazonBidsJson.value,
       hideGdprConsent: optionsFormElement.hideGdprConsent.checked,
       hidePpid: optionsFormElement.hidePpid.checked,
       hideGlobalTargetings: optionsFormElement.hideGlobalTargetings.checked,
@@ -43,6 +44,7 @@ const restoreOptions = function(e) {
       optionsFormElement.preserveLog.checked = data.preserveLog ?? false;
       optionsFormElement.showOrder.checked = data.showOrder ?? false;
       optionsFormElement.advertisersJson.value = data.advertisersJson ?? '{}';
+      optionsFormElement.amazonBidsJson.value = data.amazonBidsJson ?? '{}';
       optionsFormElement.hideGdprConsent.checked = data.hideGdprConsent ?? true;
       optionsFormElement.hidePpid.checked = data.hidePpid ?? true;
       optionsFormElement.hideGlobalTargetings.checked = data.hideGlobalTargetings ?? false;
