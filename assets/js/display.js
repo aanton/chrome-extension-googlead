@@ -139,7 +139,7 @@ const displayAdsRequest = function(data) {
   <h2>Request for ${data.length} ${label} (${datetime})</h2>
   ${getGdprHtml(data[0])}
   <div class="ppid">&bullet; ppid: ${data[0].ppid}</div>
-  ${data[0].globalTargetings ? `<div class="global-targetings">&bullet; globalTargetings: ${formatParameters(data[0].globalTargetings)}</div>` : ''}
+  ${data[0].globalTargetings ? `<div class="global-targetings">&bullet; globalTargetings: ${formatTargetings(data[0].globalTargetings)}</div>` : ''}
   ${data.map(_data => getSlotHtml(_data)).join('')}
 </div>
   `;
@@ -156,7 +156,7 @@ const getSlotHtml = function(data) {
     ${getWinnerHtml(data)}
   </h3>
   <div class="slots-sizes">&bullet; sizes: ${data.sizes}</div>
-  ${data.slotTargetings ? `<div class="slots-targetings">&bullet; slotTargetings: ${formatParameters(data.slotTargetings)}</div>` : ''}
+  ${data.slotTargetings ? `<div class="slots-targetings">&bullet; slotTargetings: ${formatTargetings(data.slotTargetings)}</div>` : ''}
   <div>
     &bullet; creative: ${formatCreativeId(data.creativeId)}
     &bullet; lineitem: ${formatLineItemId(data.lineitemId)}
@@ -220,10 +220,13 @@ const displayBlock = function(message) {
   contentEl.scrollTo(0, contentEl.scrollHeight);
 };
 
-const formatParameters = function(str) {
-  const params = str.split('&');
+const formatTargetings = function(value) {
+  const params = new URLSearchParams(value);
   params.sort();
-  return params.map((param) => formatLongValue(param)).join(' &#x2010; ');
+
+  return [...params.keys()].map((key) => {
+    return `${key}: ${formatLongValue(params.get(key), 20)}`;
+  }).join(' &#x2010; ');
 };
 
 const formatLongValue = function(value, maxLength = 40) {
