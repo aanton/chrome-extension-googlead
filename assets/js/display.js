@@ -247,7 +247,7 @@ const formatLongValue = function(value, maxLength = 40) {
     return value;
   }
 
-  return `<span class="shortened" data-value="${value}">${value.slice(0, 40)}...</span>`;
+  return `<span class="shortened" data-value="${value}">${value.slice(0, maxLength - 2)}&hellip;</span>`;
 };
 
 const formatLineItemId = function(value) {
