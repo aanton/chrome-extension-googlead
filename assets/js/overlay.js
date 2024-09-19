@@ -97,3 +97,7 @@ export const showSlotsOverlay = function () {
     });
   });
 };
+
+export const removeSlotsOverlay = function () {
+  document.querySelectorAll('.__slot_overlay').forEach((element) => element.remove());
+}
