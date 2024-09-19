@@ -1,6 +1,22 @@
 import { initDisplay, displayNavigation, displayAdsRequest } from './display.js';
 import { isAdsRequest, analyzeAdsRequest, isBasicAdRequest, analyzeBasicAdRequest } from './analyze.js';
-import { showSlotsOverlay } from './overlay.js';
+import { removeSlotsOverlay, showSlotsOverlay } from './overlay.js';
+
+let showOverlay = false;
+
+if (chrome.storage && chrome.storage.local) {
+  const options = await chrome.storage.local.get(null);
+
+  showOverlay = options.showOverlay ?? false;
+
+  chrome.storage.onChanged.addListener((changes) => {
+    if (changes.showOverlay?.newValue !== undefined) {
+      showOverlay = changes.showOverlay.newValue;
+
+      if (!showOverlay) executeRemoveOverlaysScript();
+    }
+  });
+}
 
 const init = function() {
   initDisplay();
@@ -9,13 +25,13 @@ const init = function() {
   chrome.devtools.network.onRequestFinished.addListener(handleRequest);
   chrome.devtools.network.onNavigated.addListener(handleNavigation);
 
-  // Uncomment next line to run the overlay script on current page
-  // executeOverlayScript();
+  // Comment next line to avoid running the overlay script on current page
+  executeShowOverlaysScript();
 };
 
 const handleNavigation = function(url) {
   displayNavigation(url);
-  executeOverlayScript();
+  executeShowOverlaysScript();
 };
 
 const handleRequest = async function(request) {
@@ -38,10 +54,22 @@ const handleRequest = async function(request) {
   }
 };
 
-const executeOverlayScript = function() {
+const executeShowOverlaysScript = function() {
+  if (!showOverlay) return;
+
   chrome.scripting.executeScript(
     {
       function: showSlotsOverlay,
+      target: { tabId: chrome.devtools.inspectedWindow.tabId },
+      world: 'MAIN',
+    }
+  );
+};
+
+const executeRemoveOverlaysScript = function() {
+  chrome.scripting.executeScript(
+    {
+      function: removeSlotsOverlay,
       target: { tabId: chrome.devtools.inspectedWindow.tabId },
       world: 'MAIN',
     }

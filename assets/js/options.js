@@ -15,6 +15,7 @@ const saveOptions = function(e) {
   chrome.storage.local.set(
     {
       networkId: optionsForm.networkId.value,
+      showOverlay: optionsForm.showOverlay.checked,
       preserveLog: optionsForm.preserveLog.checked,
       captureAdditionalInformation: optionsForm.captureAdditionalInformation.checked,
       advertisersJson: optionsForm.advertisersJson.value,
@@ -41,6 +42,7 @@ const restoreOptions = function(e) {
     null,
     (data) => {
       optionsForm.networkId.value = data.networkId ?? '';
+      optionsForm.showOverlay.checked = data.showOverlay ?? false;
       optionsForm.preserveLog.checked = data.preserveLog ?? false;
       optionsForm.captureAdditionalInformation.checked = data.captureAdditionalInformation ?? false;
       optionsForm.advertisersJson.value = data.advertisersJson ?? '{}';
