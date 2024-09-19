@@ -112,3 +112,7 @@ h1 {
 .hide-slots-sizes .slots-sizes {
   display: none;
 }
+
+.amazon-price {
+  color: #505050;
+}
