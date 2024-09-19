@@ -181,11 +181,14 @@ const getWinnerHtml = function (data) {
 
 const getAmazonWinnerHtml = function (data) {
   const targetings = new URLSearchParams(data.slotTargetings);
-  const bid = targetings.get('amznbid');
-  const price = amazonBidsJson[bid];
+  const price = getAmazonPrice(targetings.get('amznbid'));
   if (!price) return '';
 
   return `(${price})`;
+}
+
+const getAmazonPrice = function (bid) {
+  return amazonBidsJson[bid] || '';
 }
 
 const getPrebidWinnerHtml = function (data) {
@@ -224,9 +227,19 @@ const formatTargetings = function(value) {
   const params = new URLSearchParams(value);
   params.sort();
 
-  return [...params.keys()].map((key) => {
-    return `${key}: ${formatLongValue(params.get(key), 20)}`;
-  }).join(' &#x2010; ');
+  return [...params.keys()]
+    .map((key) => {
+      let value = params.get(key);
+      if (key === 'amznbid') {
+        const price = getAmazonPrice(value);
+        value = price ? `${value} <span class="amazon-price">(${price})</span>` : value;
+      } else {
+        value = formatLongValue(value, 20);
+      }
+
+      return `${key}=${value}`;
+    })
+    .join(' &#x2010; ');
 };
 
 const formatLongValue = function(value, maxLength = 40) {
