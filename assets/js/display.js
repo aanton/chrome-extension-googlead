@@ -155,7 +155,7 @@ const getSlotHtml = function(data) {
     <span class="adunit">${data.adUnit}</span>
     ${getWinnerHtml(data)}
   </h3>
-  <div class="slots-sizes">&bullet; sizes: ${data.sizes}</div>
+  <div class="slots-sizes">&bullet; sizes: ${formatSizes(data.sizes, data.sizeWinner)}</div>
   ${data.slotTargetings ? `<div class="slots-targetings">&bullet; slotTargetings: ${formatTargetings(data.slotTargetings)}</div>` : ''}
   <div>
     &bullet; creative: ${formatCreativeId(data)}
@@ -222,6 +222,23 @@ const displayBlock = function(message) {
 
   contentEl.insertAdjacentHTML('beforeend', message);
   contentEl.scrollTo(0, contentEl.scrollHeight);
+};
+
+const formatSizes = function (sizes, sizeWinner) {
+  return sizes
+    .split('|')
+    .map((size) => formatSize(size, sizeWinner))
+    .join();
+};
+
+const formatSize = function (size, sizeWinner) {
+  const [width, height] = size.split('x');
+
+  if (sizeWinner && Number(width) === sizeWinner.width && Number(height) === sizeWinner.height) {
+    return `<strong>${width}x${height}</strong>`;
+  }
+
+  return `${width}x${height}`;
 };
 
 const formatTargetings = function(value) {

@@ -58,6 +58,7 @@ export const analyzeAdsRequest = async function (request) {
   return adUnits.map((adUnit, index) => {
     const orderId = parsedContent[index]?.orderId;
     const advertiserId = parsedContent[index]?.advertiserId;
+    const sizeWinner = parsedContent[index]?.size;
 
     const advertiserWinner = advertiserId && advertisersJson[advertiserId]
       ? advertisersJson[advertiserId]
@@ -76,6 +77,7 @@ export const analyzeAdsRequest = async function (request) {
       orderId,
       advertiserId,
       advertiserWinner,
+      sizeWinner,
       isUnfill: lineitemId[index] === '-2',
       gdpr,
       gdprConsent,
@@ -99,6 +101,7 @@ export const analyzeBasicAdRequest = function (request) {
   const orderId = null;
   const advertiserId = null;
   const advertiserWinner = null;
+  const sizeWinner = null;
 
   const gdpr = readQueryParameter(request.request.queryString, 'gdpr') || undefined;
   const gdprConsent = readQueryParameter(request.request.queryString, 'gdpr_consent') || undefined;
@@ -119,6 +122,7 @@ export const analyzeBasicAdRequest = function (request) {
     orderId,
     advertiserId,
     advertiserWinner,
+    sizeWinner,
     isUnfill: lineitemId === '-2',
     gdpr,
     gdprConsent,
@@ -143,9 +147,14 @@ const getParsedContent = async function (request) {
             const advertiserId = Array.isArray(value[16]) ? value[16][0] : null;
             const orderId = Array.isArray(value[17]) ? value[17][0] : null;
 
+            const width = value[6];
+            const height = value[5];
+            const size = width && height ? { width, height } : null;
+
             return {
               advertiserId,
               orderId,
+              size,
             };
           });
         })
