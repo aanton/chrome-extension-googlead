@@ -1,10 +1,11 @@
 // This script is used in the Options page
 
 const optionsFormElement = document.getElementById('options-form');
-const statusElement = document.getElementById('status');
+const saveButton = document.getElementById('save');
 
 const saveOptions = function(e) {
   e.preventDefault();
+  saveButton.disabled = true;
 
   // @todo Validate JSON
   if (!optionsFormElement.advertisersJson.value) {
@@ -25,12 +26,11 @@ const saveOptions = function(e) {
       hideSlotsSizes: optionsFormElement.hideSlotsSizes.checked,
     },
     () => {
-      statusElement.textContent = 'Options saved';
-      statusElement.style.display = 'block';
+      saveButton.textContent = 'Options saved';
 
       setTimeout(() => {
-        statusElement.textContent = '';
-        statusElement.style.display = 'none';
+        saveButton.disabled = false;
+        saveButton.textContent = 'Save';
       }, 1000);
     }
   );
@@ -55,4 +55,4 @@ const restoreOptions = function(e) {
 }
 
 document.addEventListener('DOMContentLoaded', restoreOptions);
-document.getElementById('save').addEventListener('click', saveOptions);
+saveButton.addEventListener('click', saveOptions);
