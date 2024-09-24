@@ -1,6 +1,6 @@
 // This script is used in the Options page
 
-const optionsFormElement = document.getElementById('options-form');
+const optionsForm = document.getElementById('options-form');
 const saveButton = document.getElementById('save');
 
 const saveOptions = function(e) {
@@ -8,22 +8,22 @@ const saveOptions = function(e) {
   saveButton.disabled = true;
 
   // @todo Validate JSON
-  if (!optionsFormElement.advertisersJson.value) {
-    optionsFormElement.advertisersJson.value = '{}';
+  if (!optionsForm.advertisersJson.value) {
+    optionsForm.advertisersJson.value = '{}';
   }
 
   chrome.storage.local.set(
     {
-      networkId: optionsFormElement.networkId.value,
-      preserveLog: optionsFormElement.preserveLog.checked,
-      captureAdditionalInformation: optionsFormElement.captureAdditionalInformation.checked,
-      advertisersJson: optionsFormElement.advertisersJson.value,
-      amazonBidsJson: optionsFormElement.amazonBidsJson.value,
-      hideGdprConsent: optionsFormElement.hideGdprConsent.checked,
-      hidePpid: optionsFormElement.hidePpid.checked,
-      hideGlobalTargetings: optionsFormElement.hideGlobalTargetings.checked,
-      hideSlotsTargetings: optionsFormElement.hideSlotsTargetings.checked,
-      hideSlotsSizes: optionsFormElement.hideSlotsSizes.checked,
+      networkId: optionsForm.networkId.value,
+      preserveLog: optionsForm.preserveLog.checked,
+      captureAdditionalInformation: optionsForm.captureAdditionalInformation.checked,
+      advertisersJson: optionsForm.advertisersJson.value,
+      amazonBidsJson: optionsForm.amazonBidsJson.value,
+      hideGdprConsent: optionsForm.hideGdprConsent.checked,
+      hidePpid: optionsForm.hidePpid.checked,
+      hideGlobalTargetings: optionsForm.hideGlobalTargetings.checked,
+      hideSlotsTargetings: optionsForm.hideSlotsTargetings.checked,
+      hideSlotsSizes: optionsForm.hideSlotsSizes.checked,
     },
     () => {
       saveButton.textContent = 'Options saved';
@@ -40,16 +40,16 @@ const restoreOptions = function(e) {
   chrome.storage.local.get(
     null,
     (data) => {
-      optionsFormElement.networkId.value = data.networkId ?? '';
-      optionsFormElement.preserveLog.checked = data.preserveLog ?? false;
-      optionsFormElement.captureAdditionalInformation.checked = data.captureAdditionalInformation ?? false;
-      optionsFormElement.advertisersJson.value = data.advertisersJson ?? '{}';
-      optionsFormElement.amazonBidsJson.value = data.amazonBidsJson ?? '{}';
-      optionsFormElement.hideGdprConsent.checked = data.hideGdprConsent ?? true;
-      optionsFormElement.hidePpid.checked = data.hidePpid ?? true;
-      optionsFormElement.hideGlobalTargetings.checked = data.hideGlobalTargetings ?? false;
-      optionsFormElement.hideSlotsTargetings.checked = data.hideSlotsTargetings ?? false
-      optionsFormElement.hideSlotsSizes.checked = data.hideSlotsSizes ?? false;
+      optionsForm.networkId.value = data.networkId ?? '';
+      optionsForm.preserveLog.checked = data.preserveLog ?? false;
+      optionsForm.captureAdditionalInformation.checked = data.captureAdditionalInformation ?? false;
+      optionsForm.advertisersJson.value = data.advertisersJson ?? '{}';
+      optionsForm.amazonBidsJson.value = data.amazonBidsJson ?? '{}';
+      optionsForm.hideGdprConsent.checked = data.hideGdprConsent ?? true;
+      optionsForm.hidePpid.checked = data.hidePpid ?? true;
+      optionsForm.hideGlobalTargetings.checked = data.hideGlobalTargetings ?? false;
+      optionsForm.hideSlotsTargetings.checked = data.hideSlotsTargetings ?? false
+      optionsForm.hideSlotsSizes.checked = data.hideSlotsSizes ?? false;
     }
   );
 }
