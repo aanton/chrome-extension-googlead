@@ -22,22 +22,24 @@
         <legend>Orders & advertisers information</legend>
 
         <label>
-          Show orders & advertisers: <input name="showOrder" type="checkbox" />
-          <div class="info">WARNING! It takes more time to get them, use it only if you need it</div>
+          Capture additional information (orders, advertisers): <input name="showOrder" type="checkbox" />
+          <div class="info">WARNING! It takes more time to obtain this information, use it only if you need it</div>
         </label>
 
         <label>
-          Advertisers: <input name="advertisersJson" type="text" class="input-long" />
-          <div class="info">Advertisers (in JSON format) to detect their campaigns (eg. {"123":"amazon","456":"prebid"})</div>
+          Starred advertisers: <input name="advertisersJson" type="text" class="input-long" />
+          <div class="info">Map of advertisers (id:name pairs in JSON format) to detect their campaigns (eg. {"123":"amazon","456":"prebid"})</div>
         </label>
 
-        <label>Amazon bids:</label>
-        <textarea name="amazonBidsJson"></textarea>
-        <div class="info">JSON object with all Amazon bids with their related prices (eg. {"abc":0.1,"xyz":0.2})</div>
+        <label>
+          Amazon bids:<br>
+          <textarea name="amazonBidsJson"></textarea>
+          <div class="info">Map of Amazon bids (bid:price pairs in JSON format) with all Amazon bids with their related prices (eg. {"abc":0.1,"xyz":0.2})</div>
+        </label>
 
       </fieldset>
 
-      <fieldset>
+      <fieldset class="compact">
         <legend>Hide information</legend>
 
         <label>
