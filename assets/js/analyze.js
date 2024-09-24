@@ -131,6 +131,9 @@ const getParsedContent = async function (request) {
 
   return new Promise((resolve) => {
     request.getContent((content) => {
+      if (!content) return resolve({});
+      if (!content.startsWith('{')) return resolve({});
+
       const jsonObjects = content
         .split('\n')
         .filter((line) => line.startsWith('{') && line.endsWith('}'))
