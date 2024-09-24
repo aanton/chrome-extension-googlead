@@ -116,3 +116,7 @@ h1 {
 .amazon-price {
   color: #505050;
 }
+
+.slots-sizes strong {
+  font-weight: 600;
+}
