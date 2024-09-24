@@ -225,10 +225,16 @@ const displayBlock = function(message) {
 };
 
 const formatSizes = function (sizes, sizeWinner) {
-  return sizes
+  const html = sizes
     .split('|')
     .map((size) => formatSize(size, sizeWinner))
     .join();
+
+  const hasWinner = html.includes('<strong>');
+  const winnerSizeNotFoundHtml =
+    sizeWinner && !hasWinner ? ` (<strong>${sizeWinner.width}x${sizeWinner.height}</strong>)` : '';
+
+  return html + winnerSizeNotFoundHtml;
 };
 
 const formatSize = function (size, sizeWinner) {
