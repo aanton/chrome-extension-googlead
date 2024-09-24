@@ -1,17 +1,17 @@
 import { readQueryParameter, readHeader, parseJson } from './utils.js';
 
-let showOrder = false;
+let captureAdditionalInformation = false;
 let advertisersJson = {};
 
 if (chrome.storage && chrome.storage.local) {
   const options = await chrome.storage.local.get(null);
 
-  showOrder = options.showOrder ?? false;
+  captureAdditionalInformation = options.captureAdditionalInformation ?? false;
   advertisersJson = parseJson(options.advertisersJson);
 
   chrome.storage.onChanged.addListener((changes) => {
-    if (changes.showOrder?.newValue !== undefined) {
-      showOrder = changes.showOrder.newValue;
+    if (changes.captureAdditionalInformation?.newValue !== undefined) {
+      captureAdditionalInformation = changes.captureAdditionalInformation.newValue;
     }
 
     if (changes.advertisersJson?.newValue !== undefined) {
@@ -126,7 +126,7 @@ export const analyzeBasicAdRequest = function (request) {
 };
 
 const getParsedContent = async function (request) {
-  if (!showOrder) return Promise.resolve({});
+  if (!captureAdditionalInformation) return Promise.resolve({});
   if (!request.getContent) return Promise.resolve({});
 
   return new Promise((resolve) => {

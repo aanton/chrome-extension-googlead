@@ -15,7 +15,7 @@ const saveOptions = function(e) {
     {
       networkId: optionsFormElement.networkId.value,
       preserveLog: optionsFormElement.preserveLog.checked,
-      showOrder: optionsFormElement.showOrder.checked,
+      captureAdditionalInformation: optionsFormElement.captureAdditionalInformation.checked,
       advertisersJson: optionsFormElement.advertisersJson.value,
       amazonBidsJson: optionsFormElement.amazonBidsJson.value,
       hideGdprConsent: optionsFormElement.hideGdprConsent.checked,
@@ -42,7 +42,7 @@ const restoreOptions = function(e) {
     (data) => {
       optionsFormElement.networkId.value = data.networkId ?? '';
       optionsFormElement.preserveLog.checked = data.preserveLog ?? false;
-      optionsFormElement.showOrder.checked = data.showOrder ?? false;
+      optionsFormElement.captureAdditionalInformation.checked = data.captureAdditionalInformation ?? false;
       optionsFormElement.advertisersJson.value = data.advertisersJson ?? '{}';
       optionsFormElement.amazonBidsJson.value = data.amazonBidsJson ?? '{}';
       optionsFormElement.hideGdprConsent.checked = data.hideGdprConsent ?? true;
