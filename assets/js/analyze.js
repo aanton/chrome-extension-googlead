@@ -56,10 +56,8 @@ export const analyzeAdsRequest = async function (request) {
   const ppid = readQueryParameter(request.request.queryString, 'ppid') || undefined;
 
   return adUnits.map((adUnit, index) => {
-    const adUnitWithoutChildNetwork = adUnit.replace(/(^\/\d+):\d+/, '$1');
-
-    const orderId = parsedContent[adUnitWithoutChildNetwork]?.orderId;
-    const advertiserId = parsedContent[adUnitWithoutChildNetwork]?.advertiserId;
+    const orderId = parsedContent[index]?.orderId;
+    const advertiserId = parsedContent[index]?.advertiserId;
 
     const advertiserWinner = advertiserId && advertisersJson[advertiserId]
       ? advertisersJson[advertiserId]
@@ -133,30 +131,27 @@ const getParsedContent = async function (request) {
 
   return new Promise((resolve) => {
     request.getContent((content) => {
-      if (!content) return resolve({});
-      if (!content.startsWith('{')) return resolve({});
+      if (!content) return resolve([]);
+      if (!content.startsWith('{')) return resolve([]);
 
-      const jsonObjects = content
+      const data = content
         .split('\n')
         .filter((line) => line.startsWith('{') && line.endsWith('}'))
         .map((line) => JSON.parse(line))
         .map((raw) => {
-          Object.keys(raw).forEach((key) => {
-            const value = raw[key];
-
+          return Object.values(raw).map((value) => {
             const advertiserId = Array.isArray(value[16]) ? value[16][0] : null;
             const orderId = Array.isArray(value[17]) ? value[17][0] : null;
 
-            raw[key] = {
+            return {
               advertiserId,
               orderId,
             };
           });
+        })
+        .map((value) => value[0]);
 
-          return raw;
-        });
-
-      resolve(jsonObjects.reduce((acc, obj) => Object.assign(acc, obj), {}));
+      resolve(data);
     });
   });
 };
