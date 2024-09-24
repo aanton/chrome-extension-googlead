@@ -56,8 +56,10 @@ export const analyzeAdsRequest = async function (request) {
   const ppid = readQueryParameter(request.request.queryString, 'ppid') || undefined;
 
   return adUnits.map((adUnit, index) => {
-    const orderId = getOrderId(parsedContent, adUnit);
-    const advertiserId = getAdvertiserId(parsedContent, adUnit);
+    const adUnitWithoutChildNetwork = adUnit.replace(/(^\/\d+):\d+/, '$1');
+
+    const orderId = parsedContent[adUnitWithoutChildNetwork]?.orderId;
+    const advertiserId = parsedContent[adUnitWithoutChildNetwork]?.advertiserId;
 
     const advertiserWinner = advertiserId && advertisersJson[advertiserId]
       ? advertisersJson[advertiserId]
@@ -137,19 +139,24 @@ const getParsedContent = async function (request) {
       const jsonObjects = content
         .split('\n')
         .filter((line) => line.startsWith('{') && line.endsWith('}'))
-        .map((line) => JSON.parse(line));
+        .map((line) => JSON.parse(line))
+        .map((raw) => {
+          Object.keys(raw).forEach((key) => {
+            const value = raw[key];
+
+            const advertiserId = Array.isArray(value[16]) ? value[16][0] : null;
+            const orderId = Array.isArray(value[17]) ? value[17][0] : null;
+
+            raw[key] = {
+              advertiserId,
+              orderId,
+            };
+          });
+
+          return raw;
+        });
 
       resolve(jsonObjects.reduce((acc, obj) => Object.assign(acc, obj), {}));
     });
   });
-};
-
-const getOrderId = function (data, adUnit) {
-  adUnit = adUnit.replace(/(^\/\d+):\d+/, '$1');
-  return data[adUnit] && Array.isArray(data[adUnit][17]) ? data[adUnit][17][0] : null;
-};
-
-const getAdvertiserId = function (data, adUnit) {
-  adUnit = adUnit.replace(/(^\/\d+):\d+/, '$1');
-  return data[adUnit] && Array.isArray(data[adUnit][16]) ? data[adUnit][16][0] : null;
 };
