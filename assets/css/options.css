@@ -48,13 +48,21 @@ textarea {
   min-width: 80%;
 }
 
+button {
+  width: fit-content;
+  padding: 0.5em 4em;
+  background-color: steelblue;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:disabled {
+  background-color: lightsteelblue;
+  pointer-events: none;
+}
+
 .info {
   font-size: 0.9em;
   color: #505050;
-}
-
-#status {
-  display: none;
-  padding: 0.5em;
-  background-color: hsl(200, 75%, 85%);
 }
