@@ -29,6 +29,13 @@ export const showSlotsOverlay = function () {
 }
 `;
 
+  const debug = (message) => {
+    if (!window.location.search.includes('extdebug=true')) return;
+
+    const styles = `display: inline-block; color: #fff; background: hsl(200, 60%, 90%); color: #000; padding: 1px 4px; border-radius: 3px`;
+    console.log(`%cOVERLAY`, styles, message);
+  }
+
   const injectStyles = () => {
     const uniqId = `__styles_overlay`;
     if (document.getElementById(uniqId)) return;
@@ -63,7 +70,7 @@ export const showSlotsOverlay = function () {
     // @hack Force with but only if bigger than a minimum value
     if (width >= 100) overlay.style.width = `${width}px`;
 
-    console.log(`Create overlay for ${slotId} (${width}x${height})`);
+    debug(`Create overlay for ${slotId} (${width}x${height})`);
     return overlay;
   };
 
@@ -80,7 +87,7 @@ export const showSlotsOverlay = function () {
   window.googletag = window.googletag || {};
   window.googletag.cmd = window.googletag.cmd || [];
   window.googletag.cmd.push(() => {
-    console.log('Running slots overlay');
+    debug('Running slots overlay');
 
     injectStyles();
 
