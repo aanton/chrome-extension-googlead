@@ -16,6 +16,7 @@ const saveOptions = function(e) {
     {
       networkId: optionsForm.networkId.value,
       showOverlay: optionsForm.showOverlay.checked,
+      featuredTargetings: optionsForm.featuredTargetings.value,
       preserveLog: optionsForm.preserveLog.checked,
       captureAdditionalInformation: optionsForm.captureAdditionalInformation.checked,
       advertisersJson: optionsForm.advertisersJson.value,
@@ -43,6 +44,7 @@ const restoreOptions = function(e) {
     (data) => {
       optionsForm.networkId.value = data.networkId ?? '';
       optionsForm.showOverlay.checked = data.showOverlay ?? false;
+      optionsForm.featuredTargetings.value = data.featuredTargetings ?? '';
       optionsForm.preserveLog.checked = data.preserveLog ?? false;
       optionsForm.captureAdditionalInformation.checked = data.captureAdditionalInformation ?? false;
       optionsForm.advertisersJson.value = data.advertisersJson ?? '{}';
