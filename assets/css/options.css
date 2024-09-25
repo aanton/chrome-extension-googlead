@@ -44,8 +44,8 @@ input[type="text"].input-long {
 
 textarea {
   font-size: 1em;
-  min-height: 60px;
-  min-width: 80%;
+  min-height: 100px;
+  min-width: 99%;
 }
 
 button {
