@@ -53,7 +53,9 @@ export const showSlotsOverlay = function () {
     element.insertAdjacentElement('beforeEnd', overlay);
 
     // Make sure to set a style.position attribute to avoid miss aligning with absolute elements
-    if (!element.style.position) element.style.position = 'relative';
+    if (window.getComputedStyle(element).position === 'static') {
+      element.style.position = 'relative';
+    }
 
     const { width, height } = size || getSize(element);
     overlay.innerHTML = `${slotId} <span>${width}x${height}</span>`;
