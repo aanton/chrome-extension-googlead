@@ -25,7 +25,7 @@ export const isAdsRequest = function (request) {
 };
 
 export const analyzeAdsRequest = async function (request) {
-  const parsedContent = await getParsedContent(request);
+  const parsedContentResponse = await parseContentResponse(request);
 
   const adUnitsCodes = readQueryParameter(request.request.queryString, 'enc_prev_ius').split(',');
   const adUnitsRaw = readQueryParameter(request.request.queryString, 'iu_parts').split(',');
@@ -56,9 +56,9 @@ export const analyzeAdsRequest = async function (request) {
   const ppid = readQueryParameter(request.request.queryString, 'ppid') || undefined;
 
   return adUnits.map((adUnit, index) => {
-    const orderId = parsedContent[index]?.orderId;
-    const advertiserId = parsedContent[index]?.advertiserId;
-    const sizeWinner = parsedContent[index]?.size;
+    const orderId = parsedContentResponse[index]?.orderId;
+    const advertiserId = parsedContentResponse[index]?.advertiserId;
+    const sizeWinner = parsedContentResponse[index]?.size;
 
     const advertiserWinner = advertiserId && advertisersJson[advertiserId]
       ? advertisersJson[advertiserId]
@@ -129,7 +129,7 @@ export const analyzeBasicAdRequest = function (request) {
   };
 };
 
-const getParsedContent = async function (request) {
+const parseContentResponse = async function (request) {
   if (!captureAdditionalInformation) return Promise.resolve({});
   if (!request.getContent) return Promise.resolve({});
 
