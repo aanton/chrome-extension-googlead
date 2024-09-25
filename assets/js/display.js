@@ -189,6 +189,8 @@ const getAmazonWinnerHtml = function (data) {
 
 const getAmazonPrice = function (bid) {
   bid = bid.replace(/^o_/, ''); // Remove prefix for outstream bids
+  bid = bid.replace(/^v_/, ''); // Remove prefix for video bids
+  bid = bid.replace(/^amp_/, ''); // Remove prefix for AMP bids
   return amazonBidsJson[bid] || '';
 }
 
