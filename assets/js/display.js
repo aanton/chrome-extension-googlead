@@ -7,6 +7,7 @@ const adunitFilterEl = document.querySelector('#adunitFilter input');
 const adunitFilterStatusEl = document.querySelector('#adunitFilter span');
 
 let networkId = '';
+let featuredTargetings = [];
 let preserveLog = false;
 let amazonBidsJson = {};
 
@@ -15,6 +16,7 @@ if (chrome.storage && chrome.storage.local) {
   console.log('Initial options:', options);
 
   networkId = options.networkId ?? '';
+  featuredTargetings = (options.featuredTargetings ?? '').split(',').filter(Boolean);
   preserveLog = options.preserveLog ?? false;
   clearEl.classList.toggle('hide', !preserveLog);
   amazonBidsJson = parseJson(options.amazonBidsJson);
@@ -29,6 +31,10 @@ if (chrome.storage && chrome.storage.local) {
 
     if (changes.networkId?.newValue !== undefined) {
       networkId = changes.networkId.newValue;
+    }
+
+    if (changes.featuredTargetings?.newValue !== undefined) {
+      featuredTargetings = changes.featuredTargetings.newValue.split(',').filter(Boolean);
     }
 
     if (changes.preserveLog?.newValue !== undefined) {
@@ -261,6 +267,10 @@ const formatTargetings = function(value) {
         value = price ? `${value} <span class="amazon-price">(${price})</span>` : value;
       } else {
         value = formatLongValue(value, 20);
+      }
+
+      if (featuredTargetings.includes(key)) {
+        return `<strong>${key}=${value}</strong>`;
       }
 
       return `${key}=${value}`;
