@@ -158,9 +158,9 @@ const getSlotHtml = function(data) {
   <div class="slots-sizes">&bullet; sizes: ${data.sizes}</div>
   ${data.slotTargetings ? `<div class="slots-targetings">&bullet; slotTargetings: ${formatTargetings(data.slotTargetings)}</div>` : ''}
   <div>
-    &bullet; creative: ${formatCreativeId(data.creativeId)}
-    &bullet; lineitem: ${formatLineItemId(data.lineitemId)}
-    ${data.orderId ? `&bullet; order: ${formatOrderId(data.orderId)}` : ''}
+    &bullet; creative: ${formatCreativeId(data)}
+    &bullet; lineitem: ${formatLineItemId(data)}
+    ${data.orderId ? `&bullet; order: ${formatOrderId(data)}` : ''}
   </div>
 </div>
   `;
@@ -251,28 +251,32 @@ const formatLongValue = function(value, maxLength = 40) {
   return `<span class="shortened" data-value="${value}">${value.slice(0, maxLength - 2)}&hellip;</span>`;
 };
 
-const formatLineItemId = function(value) {
-  if (!networkId) return value;
-  if (value === '-1' || value === '-2') return value;
+const formatLineItemId = function({ adUnit, lineitemId }) {
+  if (!isValidNetwork(adUnit)) return lineitemId;
+  if (lineitemId === '-1' || lineitemId === '-2') return lineitemId;
 
-  const url = `https://admanager.google.com/${networkId}#delivery/line_item/detail/line_item_id=${value}&li_tab=settings`;
-  return `<a href="${url}" target="_blank">${value}</a>`
+  const url = `https://admanager.google.com/${networkId}#delivery/line_item/detail/line_item_id=${lineitemId}&li_tab=settings`;
+  return `<a href="${url}" target="_blank">${lineitemId}</a>`
 }
 
-const formatCreativeId = function(value) {
-  if (!networkId) return value;
-  if (value === '-1' || value === '-2') return value;
+const formatCreativeId = function({ adUnit, creativeId }) {
+  if (!isValidNetwork(adUnit))  return creativeId;
+  if (creativeId === '-1' || creativeId === '-2') return creativeId;
 
-  const url = `https://admanager.google.com/${networkId}#creatives/creative/detail/creative_id=${value}`;
-  return `<a href="${url}" target="_blank">${value}</a>`
+  const url = `https://admanager.google.com/${networkId}#creatives/creative/detail/creative_id=${creativeId}`;
+  return `<a href="${url}" target="_blank">${creativeId}</a>`
 }
 
-const formatOrderId = function(value) {
-  if (!networkId) return value;
-  if (!value) return value;
+const formatOrderId = function({ adUnit, orderId }) {
+  if (!isValidNetwork(adUnit))  return orderId;
+  if (!orderId) return orderId;
 
-  const url = `https://admanager.google.com/${networkId}#delivery/order/order_overview/order_id=${value}`;
-  return `<a href="${url}" target="_blank">${value}</a>`
+  const url = `https://admanager.google.com/${networkId}#delivery/order/order_overview/order_id=${orderId}`;
+  return `<a href="${url}" target="_blank">${orderId}</a>`
+}
+
+const isValidNetwork = function (adUnit) {
+  return networkId && adUnit.includes(networkId);
 }
 
 export { initDisplay, displayNavigation, displayAdsRequest };
