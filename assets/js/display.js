@@ -255,27 +255,22 @@ const formatSize = function (size, sizeWinner) {
   return `${width}x${height}`;
 };
 
-const formatTargetings = function(value) {
+const formatTargetings = function (value) {
   const params = new URLSearchParams(value);
   params.sort();
 
-  return [...params.keys()]
-    .map((key) => {
-      let value = params.get(key);
-      if (key === 'amznbid') {
-        const price = getAmazonPrice(value);
-        value = price ? `${value} <span class="amazon-price">(${price})</span>` : value;
-      } else {
-        value = formatLongValue(value, 20);
-      }
+  return '<ul>' + [...params.keys()].map((key) => formatTargeting(key, params.get(key))).join('') + '</ul>';
+};
 
-      if (featuredTargetings.includes(key)) {
-        return `<strong>${key}=${value}</strong>`;
-      }
+const formatTargeting = function (key, value) {
+  if (key === 'amznbid') {
+    const price = getAmazonPrice(value);
+    value = price ? `${value} <span class="amazon-price">(${price})</span>` : value;
+  } else {
+    value = formatLongValue(value, 20);
+  }
 
-      return `${key}=${value}`;
-    })
-    .join(' &#x2010; ');
+  return `<li ${featuredTargetings.includes(key) ? 'class="highlight"' : ''}>${key}=${value}</li>`;
 };
 
 const formatLongValue = function(value, maxLength = 40) {

@@ -85,6 +85,28 @@ h1 {
   text-decoration: underline;
 }
 
+ul {
+  display: inline;
+  padding: 0;
+
+  li {
+    display: inline;
+
+    &.highlight {
+      font-weight: 600;
+    }
+
+    &::after {
+      content: '\00a0\00B7\00a0';
+      font-weight: 600;
+    }
+
+    &:last-child::after {
+      content: '';
+    }
+  }
+}
+
 .shortened {
   cursor: pointer;
 }
