@@ -1,6 +1,9 @@
 import { initDisplay, displayNavigation, displayAdsRequest } from './display.js';
 import { isAdsRequest, analyzeAdsRequest, isBasicAdRequest, analyzeBasicAdRequest } from './analyze.js';
 import { removeSlotsOverlay, showSlotsOverlay } from './overlay.js';
+import { waitForCondition } from './utils.js';
+
+let pendingAsyncRequests = 0;
 
 let showOverlay = false;
 
@@ -29,9 +32,11 @@ const init = function() {
   executeShowOverlaysScript();
 };
 
-const handleNavigation = function(url) {
-  displayNavigation(url);
-  executeShowOverlaysScript();
+const handleNavigation = async function (url) {
+  waitForCondition(() => pendingAsyncRequests === 0).finally(() => {
+    displayNavigation(url);
+    executeShowOverlaysScript();
+  });
 };
 
 const handleRequest = async function(request) {
@@ -44,7 +49,11 @@ const handleRequest = async function(request) {
   }
 
   if (isAdsRequest(request)) {
-    displayAdsRequest(await analyzeAdsRequest(request));
+    pendingAsyncRequests++;
+    const data = await analyzeAdsRequest(request);
+    pendingAsyncRequests--;
+
+    displayAdsRequest(data);
     return;
   }
 

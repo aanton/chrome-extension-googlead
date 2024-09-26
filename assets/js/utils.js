@@ -12,6 +12,29 @@ export const wait = function (ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 };
 
+export const waitForCondition = function (
+  callable,
+  { interval = 50, maxRetries = 100 } = {}
+) {
+  let retries = 0;
+
+  return new Promise((resolve, reject) => {
+    if (callable()) return resolve(true);
+
+    const intervalId = setInterval(() => {
+      if (callable()) {
+        clearInterval(intervalId);
+        return resolve(true);
+      }
+
+      if (++retries >= maxRetries) {
+        clearInterval(intervalId);
+        return reject('Condition never succeeded');
+      }
+    }, interval);
+  });
+};
+
 export const debounce = function (callback, wait) {
   let timeout;
   return (...args) => {
