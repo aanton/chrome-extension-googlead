@@ -1,6 +1,6 @@
 {
   "name": "GAM",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "manifest_version": 3,
   "description": "Analyze Google Ad Manager requests",
   "devtools_page": "devtools.html",
