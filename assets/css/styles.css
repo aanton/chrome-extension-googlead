@@ -97,8 +97,8 @@ ul {
     }
 
     &::after {
-      content: '\00a0\00B7\00a0';
-      font-weight: 600;
+      content: '\00a0\2022';
+      font-size: 0.8em;
     }
 
     &:last-child::after {

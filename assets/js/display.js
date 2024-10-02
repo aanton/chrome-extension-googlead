@@ -259,7 +259,7 @@ const formatTargetings = function (value) {
   const params = new URLSearchParams(value);
   params.sort();
 
-  return '<ul>' + [...params.keys()].map((key) => formatTargeting(key, params.get(key))).join('') + '</ul>';
+  return '<ul>' + [...params.keys()].map((key) => formatTargeting(key, params.get(key))).join(' ') + '</ul>';
 };
 
 const formatTargeting = function (key, value) {
