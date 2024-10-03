@@ -167,6 +167,7 @@ const getSlotHtml = function(data) {
     &bullet; creative: ${formatCreativeId(data)}
     &bullet; lineitem: ${formatLineItemId(data)}
     ${data.orderId ? `&bullet; order: ${formatOrderId(data)}` : ''}
+    ${data.advertiserId ? `&bullet; advertiser: ${formatAdvertiserId(data)}` : ''}
   </div>
 </div>
   `;
@@ -303,6 +304,14 @@ const formatOrderId = function({ adUnit, orderId }) {
 
   const url = `https://admanager.google.com/${networkId}#delivery/order/order_overview/order_id=${orderId}`;
   return `<a href="${url}" target="_blank">${orderId}</a>`
+}
+
+const formatAdvertiserId = function({ adUnit, advertiserId }) {
+  if (!isValidNetwork(adUnit))  return orderId;
+  if (!advertiserId) return advertiserId;
+
+  const url = `https://admanager.google.com/${networkId}#admin/company/detail/company_id=${advertiserId}`;
+  return `<a href="${url}" target="_blank">${advertiserId}</a>`
 }
 
 const isValidNetwork = function (adUnit) {
