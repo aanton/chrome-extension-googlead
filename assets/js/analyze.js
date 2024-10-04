@@ -55,6 +55,8 @@ export const analyzeAdsRequest = async function (request) {
   const isAnonymous = isNPA || !gdprConsent;
   const ppid = readQueryParameter(request.request.queryString, 'ppid') || undefined;
 
+  const video = null;
+
   return adUnits.map((adUnit, index) => {
     const orderId = parsedContentResponse[index]?.orderId;
     const advertiserId = parsedContentResponse[index]?.advertiserId;
@@ -81,6 +83,7 @@ export const analyzeAdsRequest = async function (request) {
       isUnfill: lineitemId[index] === '-2',
       gdpr,
       gdprConsent,
+      video,
     };
   });
 };
@@ -109,6 +112,18 @@ export const analyzeBasicAdRequest = function (request) {
   const isAnonymous = isNPA || !gdprConsent;
   const ppid = readQueryParameter(request.request.queryString, 'ppid') || undefined;
 
+  // https://support.google.com/admanager/answer/10655276?hl=en
+  const video = {
+    env: readQueryParameter(request.request.queryString, 'env') || undefined,
+    // gdfp_req: readQueryParameter(request.request.queryString, 'gdfp_req'),
+    output: readQueryParameter(request.request.queryString, 'output') || undefined,
+    plcmt: readQueryParameter(request.request.queryString, 'plcmt') || undefined,
+    // unviewed_position_start: readQueryParameter(request.request.queryString, 'unviewed_position_start'),
+    vpa: readQueryParameter(request.request.queryString, 'vpa') || undefined,
+    vpmute: readQueryParameter(request.request.queryString, 'vpmute') || undefined,
+    vpos: readQueryParameter(request.request.queryString, 'vpos') || undefined,
+  }
+
   return {
     adUnit,
     sizes,
@@ -126,6 +141,7 @@ export const analyzeBasicAdRequest = function (request) {
     isUnfill: lineitemId === '-2',
     gdpr,
     gdprConsent,
+    video: video.env ? video : null,
   };
 };
 
