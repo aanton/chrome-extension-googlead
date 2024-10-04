@@ -163,6 +163,7 @@ const getSlotHtml = function(data) {
   </h3>
   <div class="slots-sizes">&bullet; sizes: ${formatSizes(data.sizes, data.sizeWinner)}</div>
   ${data.slotTargetings ? `<div class="slots-targetings">&bullet; slotTargetings: ${formatTargetings(data.slotTargetings)}</div>` : ''}
+  ${getVideoHtml(data)}
   <div>
     &bullet; creative: ${formatCreativeId(data)}
     &bullet; lineitem: ${formatLineItemId(data)}
@@ -222,6 +223,13 @@ ${data.isNPA ? '&bullet; NPA' : ''}
 &bullet; gdpr_consent: ${formatLongValue(data.gdprConsent)}<br />
 </div>
   `;
+}
+
+const getVideoHtml = function(data) {
+  if (!data.video) return '';
+
+  const html = Object.entries(data.video).map(([key, value]) => `${key}: ${value}`).join(' &bullet; ');
+  return `<div class="video">&bullet; video: ${html}</div>`;
 }
 
 const displayBlock = function(message) {
