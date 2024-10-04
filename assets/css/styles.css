@@ -159,6 +159,10 @@ ul {
   display: none;
 }
 
+.hide-video .video {
+  display: none;
+}
+
 .amazon-price {
   color: #505050;
 }

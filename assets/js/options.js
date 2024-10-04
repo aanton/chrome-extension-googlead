@@ -26,6 +26,7 @@ const saveOptions = function(e) {
       hideGlobalTargetings: optionsForm.hideGlobalTargetings.checked,
       hideSlotsTargetings: optionsForm.hideSlotsTargetings.checked,
       hideSlotsSizes: optionsForm.hideSlotsSizes.checked,
+      hideVideo: optionsForm.hideVideo.checked,
     },
     () => {
       saveButton.textContent = 'Options saved';
@@ -54,6 +55,7 @@ const restoreOptions = function(e) {
       optionsForm.hideGlobalTargetings.checked = data.hideGlobalTargetings ?? false;
       optionsForm.hideSlotsTargetings.checked = data.hideSlotsTargetings ?? false
       optionsForm.hideSlotsSizes.checked = data.hideSlotsSizes ?? false;
+      optionsForm.hideVideo.checked = data.hideVideo ?? false;
     }
   );
 }

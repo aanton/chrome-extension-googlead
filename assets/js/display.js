@@ -25,6 +25,7 @@ if (chrome.storage && chrome.storage.local) {
   document.body.classList.toggle('hide-global-targetings', options.hideGlobalTargetings ?? false);
   document.body.classList.toggle('hide-slots-targetings', options.hideSlotsTargetings ?? false);
   document.body.classList.toggle('hide-slots-sizes', options.hideSlotsSizes ?? false);
+  document.body.classList.toggle('hide-video', options.hideVideo ?? false);
 
   chrome.storage.onChanged.addListener((changes) => {
     console.log('Update options', changes)
@@ -64,6 +65,10 @@ if (chrome.storage && chrome.storage.local) {
 
     if (changes.hideSlotsSizes?.newValue !== undefined) {
       document.body.classList.toggle('hide-slots-sizes', changes.hideSlotsSizes.newValue);
+    }
+
+    if (changes.hideVideo?.newValue !== undefined) {
+      document.body.classList.toggle('hide-video', changes.hideVideo.newValue);
     }
   });
 }
