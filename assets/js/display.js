@@ -320,7 +320,7 @@ const formatOrderId = function({ adUnit, orderId }) {
 }
 
 const formatAdvertiserId = function({ adUnit, advertiserId }) {
-  if (!isValidNetwork(adUnit))  return orderId;
+  if (!isValidNetwork(adUnit))  return advertiserId;
   if (!advertiserId) return advertiserId;
 
   const url = `https://admanager.google.com/${networkId}#admin/company/detail/company_id=${advertiserId}`;
