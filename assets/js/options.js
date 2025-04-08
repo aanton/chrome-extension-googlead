@@ -21,6 +21,7 @@ const saveOptions = function(e) {
       captureAdditionalInformation: optionsForm.captureAdditionalInformation.checked,
       advertisersJson: optionsForm.advertisersJson.value,
       amazonBidsJson: optionsForm.amazonBidsJson.value,
+      amazonBiddersJson: optionsForm.amazonBiddersJson.value,
       hideGdprConsent: optionsForm.hideGdprConsent.checked,
       hidePpid: optionsForm.hidePpid.checked,
       hideGlobalTargetings: optionsForm.hideGlobalTargetings.checked,
@@ -50,6 +51,7 @@ const restoreOptions = function(e) {
       optionsForm.captureAdditionalInformation.checked = data.captureAdditionalInformation ?? false;
       optionsForm.advertisersJson.value = data.advertisersJson ?? '{}';
       optionsForm.amazonBidsJson.value = data.amazonBidsJson ?? '{}';
+      optionsForm.amazonBiddersJson.value = data.amazonBiddersJson ?? '{}';
       optionsForm.hideGdprConsent.checked = data.hideGdprConsent ?? true;
       optionsForm.hidePpid.checked = data.hidePpid ?? true;
       optionsForm.hideGlobalTargetings.checked = data.hideGlobalTargetings ?? false;

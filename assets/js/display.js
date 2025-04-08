@@ -10,6 +10,7 @@ let networkId = '';
 let featuredTargetings = [];
 let preserveLog = false;
 let amazonBidsJson = {};
+let amazonBiddersJson = {};
 
 if (chrome.storage && chrome.storage.local) {
   const options = await chrome.storage.local.get(null);
@@ -20,6 +21,7 @@ if (chrome.storage && chrome.storage.local) {
   preserveLog = options.preserveLog ?? false;
   clearEl.classList.toggle('hide', !preserveLog);
   amazonBidsJson = parseJson(options.amazonBidsJson);
+  amazonBiddersJson = parseJson(options.amazonBiddersJson);
   document.body.classList.toggle('hide-gdpr-consent', options.hideGdprConsent ?? true);
   document.body.classList.toggle('hide-ppid', options.hidePpid ?? true);
   document.body.classList.toggle('hide-global-targetings', options.hideGlobalTargetings ?? false);
@@ -45,6 +47,10 @@ if (chrome.storage && chrome.storage.local) {
 
     if (changes.amazonBidsJson?.newValue !== undefined) {
       amazonBidsJson = parseJson(changes.amazonBidsJson.newValue);
+    }
+
+    if (changes.amazonBiddersJson?.newValue !== undefined) {
+      amazonBiddersJson = parseJson(changes.amazonBiddersJson.newValue);
     }
 
     if (changes.hideGdprConsent?.newValue !== undefined) {
@@ -195,9 +201,12 @@ const getWinnerHtml = function (data) {
 const getAmazonWinnerHtml = function (data) {
   const targetings = new URLSearchParams(data.slotTargetings);
   const price = getAmazonPrice(targetings.get('amznbid'));
-  if (!price) return '';
+  const bidder = getAmazonBidder(targetings.get('amznp'));
 
-  return `(${price})`;
+  if (bidder && price) return `(${bidder}: ${price})`;
+  if (bidder) return `(${bidder})`;
+  if (price) return `(${price})`;
+  return '';
 }
 
 const getAmazonPrice = function (bid) {
@@ -206,6 +215,11 @@ const getAmazonPrice = function (bid) {
   bid = bid.replace(/^amp_/, ''); // Remove prefix for AMP bids
   return amazonBidsJson[bid] || '';
 }
+
+const getAmazonBidder = function (value) {
+  return amazonBiddersJson[value] || '';
+}
+
 
 const getPrebidWinnerHtml = function (data) {
   const targetings = new URLSearchParams(data.slotTargetings);
@@ -280,6 +294,9 @@ const formatTargeting = function (key, value) {
   if (key === 'amznbid') {
     const price = getAmazonPrice(value);
     value = price ? `${value} <span class="amazon-price">(${price})</span>` : value;
+  } else if (key === 'amznp') {
+    const price = getAmazonBidder(value);
+    value = price ? `${value} <span class="amazon-bidder">(${price})</span>` : value;
   } else {
     value = formatLongValue(value, 20);
   }
