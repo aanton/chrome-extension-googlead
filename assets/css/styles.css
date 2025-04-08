@@ -163,7 +163,7 @@ ul {
   display: none;
 }
 
-.amazon-price {
+.amazon-price, .amazon-bidder {
   color: #505050;
 }
 
